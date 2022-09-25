@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  min-width: 950px;
+  height: 100%;
+}
+.container .ant-layout-sider {
+  box-sizing: border-box;
+}
+.container .ant.-layout {
+  overflow-x: hidden;
+}
+.container .ant.-layout .ant-layout-content {
+  box-sizing: border-box;
+  flex: 1;
+  padding: 10px 12px;
+  overflow-x: hidden;
+}

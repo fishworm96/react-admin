@@ -23,3 +23,10 @@ declare interface ViteEnv {
 	VITE_BUILD_GZIP: boolean;
 	VITE_REPORT: boolean;
 }
+
+declare interface MenuInfo {
+	key: string;
+	keyPath: string[];
+	item: React.ReactInstance;
+	domEvent: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>;
+}
