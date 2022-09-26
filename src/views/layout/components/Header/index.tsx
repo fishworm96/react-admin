@@ -1,5 +1,6 @@
 import { Layout } from "antd";
 import AssemblySize from "./componentes/AssemblySize";
+import AvatarIcon from "./componentes/AvatarIcon";
 // import BreadcrumbNav from "./componentes/BreadcrumbNav";
 import CollapseIcon from "./componentes/CollapseIcon";
 import Theme from "./componentes/Theme";
@@ -17,6 +18,7 @@ const LayoutHeader = () => {
 				<AssemblySize />
 				<Theme />
 				<span className="username">Hooks</span>
+				<AvatarIcon />
 			</div>
 		</Header>
 	);
