@@ -11,5 +11,5 @@ const Logo = (props: any) => {
 	);
 };
 
-const mapStateToProps = (state: any) => state.meun;
+const mapStateToProps = (state: any) => state.menu;
 export default connect(mapStateToProps)(Logo);
