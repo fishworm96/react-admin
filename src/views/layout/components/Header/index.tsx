@@ -4,6 +4,7 @@ import AvatarIcon from "./componentes/AvatarIcon";
 // import BreadcrumbNav from "./componentes/BreadcrumbNav";
 import CollapseIcon from "./componentes/CollapseIcon";
 import Theme from "./componentes/Theme";
+import "./index.less";
 
 const LayoutHeader = () => {
 	const { Header } = Layout;

@@ -1,3 +1,5 @@
+import { getAuthorButtons } from "@/api/modules/login";
+import { setAuthButtons } from "@/redux/modules/auth/actions";
 import Layout from "antd/lib/layout";
 import layout from "antd/lib/layout";
 import { useEffect } from "react";
@@ -10,21 +12,29 @@ import "./index.less";
 
 const LayoutIndex = (props: any) => {
 	const { Sider, Content } = layout;
-	const { isCollapse, upDateCollapse } = props;
+	const { isCollapse, updateCollapse } = props;
+
+	// 获取按钮权限列表
+	const getAuthButtonsList = async () => {
+		const { data } = await getAuthorButtons();
+		console.log(data);
+		setAuthButtons(data!);
+	};
 
 	// 监听窗口大小变化
 	const listeningWindow = () => {
 		window.onresize = () => {
 			return (() => {
 				let screenWidth = document.body.clientWidth;
-				if (!isCollapse && screenWidth < 1200) upDateCollapse(true);
-				if (!isCollapse && screenWidth > 1200) upDateCollapse(false);
+				if (!isCollapse && screenWidth < 1200) updateCollapse(true);
+				if (!isCollapse && screenWidth > 1200) updateCollapse(false);
 			})();
 		};
 	};
 
 	useEffect(() => {
 		listeningWindow();
+		getAuthButtonsList();
 	});
 
 	return (

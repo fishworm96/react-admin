@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, MenuProps, Spin } from "antd";
+import { setBreadcrumbList } from "@/redux/modules/breadcrumb/action";
 import Logo from "./components/Logo";
 import { connect } from "react-redux";
 import React from "react";
@@ -8,10 +9,11 @@ import { getMenuList } from "@/api/modules/login";
 import { findAllBreadcrumb, getOpenKeys, handleRouter, searchRoute } from "@/utils/util";
 import * as Icons from "@ant-design/icons";
 import "./index.less";
+import { setMenuList } from "@/redux/modules/menu/action";
+import { setAuthRouter } from "@/redux/modules/auth/actions";
 
 const LayoutMenu = (props: any) => {
 	const { pathname } = useLocation();
-	// eslint-disable-next-line react/prop-types
 	const { isCollapse, setBreadcrumbList, setAuthRouter, setMenuList: setMenuListAction } = props;
 	const [selectedKeys, setSelectedKeys] = useState<string[]>([pathname]);
 	const [openKeys, setOpenKeys] = useState<string[]>([]);
@@ -71,6 +73,7 @@ const LayoutMenu = (props: any) => {
 		setLoading(true);
 		try {
 			const { data } = await getMenuList();
+			console.log(data);
 			if (!data) return;
 			setMenuList(deepLoopFloat(data));
 			// 存储处理过后的所有面包屑导航栏到 redux 中
@@ -85,7 +88,7 @@ const LayoutMenu = (props: any) => {
 	};
 	useEffect(() => {
 		getMenuData();
-	});
+	}, []);
 
 	// 点击当前菜单跳转页面
 	const navigate = useNavigate();
@@ -115,4 +118,5 @@ const LayoutMenu = (props: any) => {
 };
 
 const mapStateToProps = (state: any) => state.menu;
-export default connect(mapStateToProps)(LayoutMenu);
+const mapDispatchToProps = { setMenuList, setBreadcrumbList, setAuthRouter };
+export default connect(mapStateToProps, mapDispatchToProps)(LayoutMenu);
