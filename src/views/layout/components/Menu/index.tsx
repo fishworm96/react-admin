@@ -73,8 +73,8 @@ const LayoutMenu = (props: any) => {
 		setLoading(true);
 		try {
 			const { data } = await getMenuList();
-			console.log(data);
 			if (!data) return;
+			console.log(data);
 			setMenuList(deepLoopFloat(data));
 			// 存储处理过后的所有面包屑导航栏到 redux 中
 			setBreadcrumbList(findAllBreadcrumb(data));

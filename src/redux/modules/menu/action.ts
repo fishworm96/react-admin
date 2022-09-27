@@ -1,9 +1,9 @@
 import * as types from "@/redux/mutation-types";
 
 // updateCollapse
-export const updateCollapse = (isCollpase: boolean) => ({
+export const updateCollapse = (isCollapse: boolean) => ({
 	type: types.UPDATE_COLLAPSE,
-	isCollpase
+	isCollapse
 });
 
 // setMenuList
