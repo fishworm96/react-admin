@@ -1,10 +1,10 @@
 import { getAuthorButtons } from "@/api/modules/login";
+import { store } from "@/redux";
 import { setAuthButtons } from "@/redux/modules/auth/actions";
-import Layout from "antd/lib/layout";
-import layout from "antd/lib/layout";
+import { default as Layout, default as layout } from "antd/lib/layout";
 import { useEffect } from "react";
 import { connect } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import LayoutFooter from "./components/Footer";
 import LayoutHeader from "./components/Header";
 import LayoutMenu from "./components/Menu";
@@ -13,6 +13,8 @@ import "./index.less";
 const LayoutIndex = (props: any) => {
 	const { Sider, Content } = layout;
 	const { isCollapse, updateCollapse } = props;
+	const token = store.getState().global.token;
+	if (!token) return <Navigate to="/login" replace />;
 
 	// 获取按钮权限列表
 	const getAuthButtonsList = async () => {
