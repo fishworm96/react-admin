@@ -1,7 +1,8 @@
 import { getAuthorButtons } from "@/api/modules/login";
 import { store } from "@/redux";
 import { setAuthButtons } from "@/redux/modules/auth/actions";
-import { default as Layout, default as layout } from "antd/lib/layout";
+import { updateCollapse } from "@/redux/modules/menu/action";
+import { Layout } from "antd";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
@@ -11,15 +12,15 @@ import LayoutMenu from "./components/Menu";
 import "./index.less";
 
 const LayoutIndex = (props: any) => {
-	const { Sider, Content } = layout;
-	const { isCollapse, updateCollapse } = props;
+	const { Sider, Content } = Layout;
+	const { isCollapse, updateCollapse, setAuthButtons } = props;
 	const token = store.getState().global.token;
 	if (!token) return <Navigate to="/login" replace />;
 
 	// 获取按钮权限列表
 	const getAuthButtonsList = async () => {
 		const { data } = await getAuthorButtons();
-		console.log(data);
+		// console.log(data);
 		setAuthButtons(data!);
 	};
 
@@ -37,12 +38,12 @@ const LayoutIndex = (props: any) => {
 	useEffect(() => {
 		listeningWindow();
 		getAuthButtonsList();
-	});
+	}, []);
 
 	return (
 		// 这里不用 layout 组件原因是切换页面时样式会先错乱然后再正常显示，造成页面闪屏效果
 		<section className="container">
-			<Sider trigger={null} collapsed={props.isCollapse} width={220} theme="dark">
+			<Sider collapsible trigger={null} collapsed={props.isCollapse} width={220} theme="dark">
 				<LayoutMenu></LayoutMenu>
 			</Sider>
 			<Layout>
@@ -58,4 +59,5 @@ const LayoutIndex = (props: any) => {
 };
 
 const mapStateToProps = (state: any) => state.menu;
-export default connect(mapStateToProps)(LayoutIndex);
+const mapDispatchToProps = { setAuthButtons, updateCollapse };
+export default connect(mapStateToProps, mapDispatchToProps)(LayoutIndex);
