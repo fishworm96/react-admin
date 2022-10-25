@@ -19,13 +19,8 @@ const LayoutIndex = (props: any) => {
 
 	// 获取按钮权限列表
 	const getAuthButtonsList = async () => {
-<<<<<<< HEAD
 		const { data } = await getMenuList();
 		console.log(data);
-=======
-		const { data } = await getAuthorButtons();
-		// console.log(data);
->>>>>>> d42c0143b99a118ed9ea4ac1b629b9d4ab67ed91
 		setAuthButtons(data!);
 	};
 
