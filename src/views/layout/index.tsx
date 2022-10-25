@@ -1,4 +1,4 @@
-import { getAuthorButtons } from "@/api/modules/login";
+import { getMenuList } from "@/api/modules/login";
 import { store } from "@/redux";
 import { setAuthButtons } from "@/redux/modules/auth/actions";
 import { default as Layout, default as layout } from "antd/lib/layout";
@@ -18,7 +18,7 @@ const LayoutIndex = (props: any) => {
 
 	// 获取按钮权限列表
 	const getAuthButtonsList = async () => {
-		const { data } = await getAuthorButtons();
+		const { data } = await getMenuList();
 		console.log(data);
 		setAuthButtons(data!);
 	};
