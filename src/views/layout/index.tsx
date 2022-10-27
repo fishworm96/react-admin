@@ -1,4 +1,4 @@
-import { getMenuList } from "@/api/modules/login";
+import { getAuthorButtons } from "@/api/modules/login";
 import { store } from "@/redux";
 import { setAuthButtons } from "@/redux/modules/auth/actions";
 import { updateCollapse } from "@/redux/modules/menu/action";
@@ -19,7 +19,7 @@ const LayoutIndex = (props: any) => {
 
 	// 获取按钮权限列表
 	const getAuthButtonsList = async () => {
-		const { data } = await getMenuList();
+		const { data } = await getAuthorButtons();
 		console.log(data);
 		setAuthButtons(data!);
 	};
