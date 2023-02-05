@@ -3,7 +3,9 @@ declare namespace Menu {
 	interface MenuOptions {
 		path: string;
 		title: string;
-		icon?: string;
+		id: number;
+		module_id: number;
+		icon: string;
 		isLink?: string;
 		close?: boolean;
 		children?: MenuOptions[];

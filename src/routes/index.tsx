@@ -4,6 +4,7 @@ import LayoutIndex from "@/views/layout";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Home from "@/views/home";
 import homeRouter from "./modules/home";
+import accessRouter from "./modules/access";
 
 // 导入所有router
 const metaRouters: Record<string, { [key: string]: any }> = import.meta.glob("./modules/*.tsx");
@@ -39,6 +40,7 @@ export const router = [
 			}
 		]
 	},
+	...accessRouter,
 	...homeRouter,
 	...routerArray
 ];

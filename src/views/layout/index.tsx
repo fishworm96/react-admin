@@ -14,7 +14,7 @@ import "./index.less";
 const LayoutIndex = (props: any) => {
 	const { Sider, Content } = Layout;
 	const { isCollapse, updateCollapse, setAuthButtons } = props;
-	const token = store.getState().global.token;
+	const { token } = store.getState().global;
 	if (!token) return <Navigate to="/login" replace />;
 
 	// 获取按钮权限列表
