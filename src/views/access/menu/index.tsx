@@ -28,12 +28,12 @@ const columns: ColumnsType<Menu.MenuOptions> = [
 	{
 		title: "操作",
 		dataIndex: "",
-		key: "id",
+		key: "button",
 		width: "30%"
 	}
 ];
 
-const AllMenu: React.FC<MenuState> = ({ menuList }: MenuState) => {
+const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	console.log(menuList);
 	return (
 		<>
@@ -42,5 +42,5 @@ const AllMenu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	);
 };
 
-const mapStateToProps = (state: MenuState) => state.menuList;
-export default connect(mapStateToProps)(AllMenu);
+const mapStateToProps = (state: MenuState) => state.menu;
+export default connect(mapStateToProps)(Menu);

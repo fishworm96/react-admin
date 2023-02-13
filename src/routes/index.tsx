@@ -30,7 +30,7 @@ export const router = [
 		element: <LayoutIndex />,
 		children: [
 			{
-				path: "/home/index",
+				path: "/home",
 				element: <Home />,
 				meta: {
 					requiresAuth: false,

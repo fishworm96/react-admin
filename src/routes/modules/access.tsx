@@ -1,6 +1,5 @@
 import { RouteObject } from "@/routes/interface";
-import AddMenu from "@/views/access/menu/AddMenu";
-import AllMenu from "@/views/access/menu/AllMenu";
+import Menu from "@/views/access/menu";
 import LayoutIndex from "@/views/layout";
 
 const accessRouter: Array<RouteObject> = [
@@ -8,17 +7,8 @@ const accessRouter: Array<RouteObject> = [
 		element: <LayoutIndex />,
 		children: [
 			{
-				path: "/access/menu/list",
-				element: <AllMenu />,
-				meta: {
-					requiresAuth: false,
-					title: "登录页",
-					key: "login"
-				}
-			},
-			{
-				path: "/access/menu/add",
-				element: <AddMenu />,
+				path: "/access/menu",
+				element: <Menu />,
 				meta: {
 					requiresAuth: false,
 					title: "登录页",
