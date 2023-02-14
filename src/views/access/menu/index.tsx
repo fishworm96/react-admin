@@ -1,57 +1,52 @@
+import { UpdateBtn } from "@/components/Button";
+import DeleteBtn from "@/components/Button/components/DeleteBtn";
 import BasicContent from "@/components/Content";
+import BasicModal from "@/components/Modal";
+import BasicTable from "@/components/Table";
 import { MenuState } from "@/redux/interface";
 import { PlusCircleTwoTone } from "@ant-design/icons";
-import { Button, Space, Table } from "antd";
-import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import { Button, Space } from "antd";
+import React, { useState } from "react";
 import { connect } from "react-redux";
+import { tableColumns } from "./model";
 
-const columns: ColumnsType<Menu.MenuOptions> = [
-	{
-		title: "名称",
-		dataIndex: "title",
-		key: "title"
-	},
-	{
-		title: "菜单等级",
-		dataIndex: "module_id",
-		key: "module_id"
-	},
-	{
-		title: "路径",
-		dataIndex: "path",
-		key: "path"
-	},
-	{
-		title: "图标",
-		dataIndex: "icon",
-		key: "icon"
-	},
-	{
-		title: "操作",
-		dataIndex: "",
-		key: "button",
-		width: "30%",
-		render: () => (
-			<Space wrap>
-				<Button type="primary">编辑</Button>
-				<Button type="primary" danger>
-					删除
-				</Button>
-			</Space>
-		)
-	}
-];
+type IRowData = {
+	id: string;
+};
 
 const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
-	// console.log(menuList);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const onUpdate = (id: string) => {
+		setIsModalOpen(true);
+		console.log(id);
+	};
+
+	const handleOk = () => {
+		console.log("");
+	};
+
+	const handleCancel = () => {
+		setIsModalOpen(false);
+	};
+
+	const optionRender: ITableOptions<object> = (_, record) => {
+		return (
+			<Space wrap>
+				<UpdateBtn onClick={() => onUpdate((record as IRowData).id)}></UpdateBtn>
+				<DeleteBtn></DeleteBtn>
+			</Space>
+		);
+	};
+
 	return (
 		<BasicContent>
 			<>
 				<Button type="primary" icon={<PlusCircleTwoTone />}>
 					新增
 				</Button>
-				<Table columns={columns} dataSource={menuList} />
+				<BasicModal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} />
+				<BasicTable columns={tableColumns(optionRender)} dataSource={menuList!} />
 			</>
 		</BasicContent>
 	);

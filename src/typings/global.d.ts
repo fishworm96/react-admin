@@ -33,3 +33,8 @@ declare interface MenuInfo {
 	item: React.ReactInstance;
 	domEvent: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>;
 }
+
+// 表格操作
+declare type ITableOptions<T = object> = (value: unknown, record: T, index?: number) => JSX.Element;
+
+declare type ITableColumn<T = object> = ColumnsType<T>;
