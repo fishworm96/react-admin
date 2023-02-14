@@ -1,6 +1,7 @@
 import { UpdateBtn } from "@/components/Button";
 import DeleteBtn from "@/components/Button/components/DeleteBtn";
 import BasicContent from "@/components/Content";
+import BasicForm from "@/components/Form";
 import BasicModal from "@/components/Modal";
 import BasicTable from "@/components/Table";
 import { MenuState } from "@/redux/interface";
@@ -45,8 +46,10 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 				<Button type="primary" icon={<PlusCircleTwoTone />}>
 					新增
 				</Button>
-				<BasicModal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} />
 				<BasicTable columns={tableColumns(optionRender)} dataSource={menuList!} />
+				<BasicModal title={"编辑"} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+					<BasicForm list={menuList!} />
+				</BasicModal>
 			</>
 		</BasicContent>
 	);

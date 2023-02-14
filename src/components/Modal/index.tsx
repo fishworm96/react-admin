@@ -5,13 +5,7 @@ import { Modal, ModalProps } from "antd";
 // }
 
 const BasicModal = (props: ModalProps) => {
-	return (
-		<Modal {...props}>
-			<p>Some contents...</p>
-			<p>Some contents...</p>
-			<p>Some contents...</p>
-		</Modal>
-	);
+	return <Modal {...props}>{props.children}</Modal>;
 };
 
 export default BasicModal;
