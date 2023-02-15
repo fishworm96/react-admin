@@ -47,7 +47,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 					新增
 				</Button>
 				<BasicTable columns={tableColumns(optionRender)} dataSource={menuList!} />
-				<BasicModal title={"编辑"} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+				<BasicModal width={1000} title={"编辑"} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
 					<BasicForm list={menuList!} />
 				</BasicModal>
 			</>
