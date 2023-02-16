@@ -1,10 +1,11 @@
 import { Cascader, Form, FormProps, Input, Select, Space } from "antd";
-import { BaseOptionType, DefaultOptionType } from "antd/lib/select";
+import { useEffect, useState } from "react";
 import BasicIcon from "../Icon";
-import iocns from "../Icon/icons.json";
+import icons from "../Icon/icons.json";
 
 interface BasicForm extends FormProps {
 	list: Menu.MenuOptions[];
+	btnId: number;
 }
 
 interface CascadedOptions {
@@ -13,32 +14,52 @@ interface CascadedOptions {
 	children?: CascadedOptions[];
 }
 
-const BasicForm = ({ list }: BasicForm) => {
-	console.log(list);
-	const { css_prefix_text, glyphs } = iocns;
+const BasicForm = ({ list, btnId }: BasicForm) => {
+	const [cascadedDefault, setCascadedDefault] = useState<string[]>(["根目录"]);
+	const { css_prefix_text, glyphs } = icons;
 
-	const cascadedOptions = (list: Menu.MenuOptions[]): (DefaultOptionType | BaseOptionType)[] => {
-		let option: CascadedOptions = {
-			label: "",
-			value: "",
-			children: []
-		};
-		let options: CascadedOptions[] = [];
-		list.forEach((item: Menu.MenuOptions) => {
-			option.label = item.title;
-			option.value = item.id;
-			if (item.children) {
-				cascadedOptions(item.children);
+	useEffect(() => {
+		getParentName(btnId);
+	}, [btnId]);
+
+	const cascadedOptions = (list: Menu.MenuOptions[]): CascadedOptions[] => {
+		const lists = list.map(item => {
+			const { title, id, children } = item;
+			const cascadedOption: CascadedOptions = { label: title, value: id };
+
+			if (children && children.length) {
+				cascadedOption.children = cascadedOptions(children);
 			}
+			return cascadedOption;
 		});
-		options.push(option);
-		return options;
+		if (list[0].module_id === 0) lists.unshift({ label: "根目录", value: 0 });
+		return lists;
 	};
 
-	console.log(list[0]);
+	const getParentName = (btnId: number) => {
+		list.forEach(item => {
+			const { title, id, module_id } = item;
+			if (id === btnId) {
+				setCascadedDefault([title]);
+				console.log("123" + cascadedDefault, title);
+				return;
+			}
+			if (module_id === 0) {
+				setCascadedDefault(["根目录"]);
+				// console.log(cascadedDefault);
+				return;
+			}
+		});
+	};
+
+	const onChange = (value: any, selectedOptions: any) => {
+		console.log(selectedOptions);
+	};
+
+	const displayRender = (labels: string[]) => labels[labels.length - 1];
 
 	const onFinish = (value: object) => {
-		console.log(value);
+		console.log(value, btnId);
 	};
 
 	return (
@@ -66,9 +87,12 @@ const BasicForm = ({ list }: BasicForm) => {
 				</Form.Item>
 				<Form.Item label="父节点ID">
 					<Cascader
-						style={{ width: "100%" }}
+						style={{ width: 250 }}
+						defaultValue={[cascadedDefault]}
 						options={cascadedOptions(list)}
-						// onChange={onChange}
+						expandTrigger="hover"
+						displayRender={displayRender}
+						onChange={onChange}
 						maxTagCount="responsive"
 					/>
 				</Form.Item>
