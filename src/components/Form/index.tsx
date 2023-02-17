@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import BasicIcon from "../Icon";
 import icons from "../Icon/icons.json";
 
-interface BasicForm extends FormProps {
+interface Props extends FormProps {
 	list: Menu.MenuOptions[];
 	btnObj: BtnObj;
 }
@@ -15,7 +15,7 @@ interface CascadedOptions {
 	children?: CascadedOptions[];
 }
 
-const BasicForm = ({ list, btnObj }: BasicForm) => {
+const BasicForm = ({ list, btnObj }: Props) => {
 	const [cascadedDefault, setCascadedDefault] = useState<string>("根目录");
 	const { css_prefix_text, glyphs } = icons;
 
@@ -25,8 +25,8 @@ const BasicForm = ({ list, btnObj }: BasicForm) => {
 
 	const cascadedOptions = (list: Menu.MenuOptions[]): CascadedOptions[] => {
 		const lists = list.map(item => {
-			const { title, id, children } = item;
-			const cascadedOption: CascadedOptions = { label: title, value: id };
+			const { id, title, module_id, children } = item;
+			const cascadedOption: CascadedOptions = { label: title, value: `${module_id}_${id}` };
 
 			if (children && children.length) {
 				cascadedOption.children = cascadedOptions(children);
@@ -37,19 +37,19 @@ const BasicForm = ({ list, btnObj }: BasicForm) => {
 		return lists;
 	};
 
-	const getParentName = (btnObj: BtnObj, list: Menu.MenuOptions[], name?: string) => {
+	const getParentName = (btnObj: BtnObj, list: Menu.MenuOptions[], parent?: BtnObj) => {
 		list.forEach(item => {
-			const { title, id, children } = item;
+			const { id, children } = item;
 			if (btnObj.module_id === 0) {
 				setCascadedDefault("根目录");
 				return;
 			}
-			if (id === btnObj.id && name) {
-				setCascadedDefault(name);
+			if (id === btnObj.id && parent?.title) {
+				setCascadedDefault(parent?.title);
 				return;
 			}
 			if (children && children.length) {
-				getParentName(btnObj, children, title);
+				getParentName(btnObj, children, item);
 			}
 		});
 	};
@@ -90,7 +90,6 @@ const BasicForm = ({ list, btnObj }: BasicForm) => {
 				<Form.Item label="父节点ID">
 					<Cascader
 						style={{ width: 250 }}
-						// defaultValue={[cascadedDefault]}
 						value={[cascadedDefault]}
 						options={cascadedOptions(list)}
 						expandTrigger="hover"

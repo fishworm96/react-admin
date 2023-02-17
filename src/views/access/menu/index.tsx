@@ -7,9 +7,9 @@ import BasicTable from "@/components/Table";
 import { MenuState } from "@/redux/interface";
 import { PlusCircleTwoTone } from "@ant-design/icons";
 import { Button, Space } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { tableColumns } from "./model";
+import { TableColumns, tableColumns } from "./model";
 
 export type BtnObj = {
 	id: number;
@@ -22,6 +22,23 @@ export type BtnObj = {
 const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const [btnObj, setBtnObj] = useState<BtnObj>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [tableData, seTableData] = useState<TableColumns[]>([]);
+
+	useEffect(() => {
+		seTableData(changeTableData(menuList!));
+	}, [menuList]);
+
+	const changeTableData = (list: Menu.MenuOptions[]): TableColumns[] => {
+		return list.map((item, index) => {
+			const { title, module_id, children, path, icon } = item;
+			const cascadedOption: TableColumns = { key: index.toString(), title: title, module_id: module_id, path: path, icon: icon };
+
+			if (children && children.length) {
+				cascadedOption.children = changeTableData(children);
+			}
+			return cascadedOption;
+		});
+	};
 
 	const onUpdate = (btnObj: BtnObj) => {
 		setIsModalOpen(true);
@@ -51,7 +68,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 				<Button type="primary" icon={<PlusCircleTwoTone />}>
 					新增
 				</Button>
-				<BasicTable columns={tableColumns(optionRender)} dataSource={menuList!} />
+				<BasicTable columns={tableColumns(optionRender)} dataSource={tableData} />
 				<BasicModal width={1000} title={"编辑"} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
 					<BasicForm list={menuList!} btnObj={btnObj!} />
 				</BasicModal>

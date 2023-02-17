@@ -1,4 +1,13 @@
-export const tableColumns = (optionRender: ITableOptions<object>): ITableColumn => {
+export interface TableColumns {
+	key: string;
+	title: string;
+	module_id: number;
+	path: string;
+	icon: string;
+	children?: TableColumns[];
+}
+
+export const tableColumns = (optionRender: ITableOptions<TableColumns>) => {
 	return [
 		{
 			title: "名称",
@@ -22,10 +31,10 @@ export const tableColumns = (optionRender: ITableOptions<object>): ITableColumn 
 		},
 		{
 			title: "操作",
-			dataIndex: "",
+			dataIndex: "button",
 			key: "button",
 			width: "30%",
-			render: (value: unknown, record: object) => optionRender(value, record)
+			render: (value: unknown, record: TableColumns) => optionRender(value, record)
 		}
 	];
 };
