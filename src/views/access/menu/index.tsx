@@ -11,13 +11,13 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { TableColumns, tableColumns } from "./model";
 
-export type BtnObj = {
+export interface BtnObj {
 	id: number;
 	icon: string;
 	module_id: number;
 	path: string;
 	title: string;
-};
+}
 
 const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const [btnObj, setBtnObj] = useState<BtnObj>();
@@ -31,7 +31,13 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const changeTableData = (list: Menu.MenuOptions[]): TableColumns[] => {
 		return list.map((item, index) => {
 			const { title, module_id, children, path, icon } = item;
-			const cascadedOption: TableColumns = { key: index.toString(), title: title, module_id: module_id, path: path, icon: icon };
+			const cascadedOption: TableColumns = {
+				key: `${module_id}_${index.toString()}`,
+				title: title,
+				module_id: module_id,
+				path: path,
+				icon: icon
+			};
 
 			if (children && children.length) {
 				cascadedOption.children = changeTableData(children);

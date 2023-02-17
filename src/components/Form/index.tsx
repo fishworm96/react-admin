@@ -55,29 +55,29 @@ const BasicForm = ({ list, btnObj }: Props) => {
 	};
 
 	const onChange = (value: any, selectedOptions: any) => {
-		console.log(selectedOptions);
+		setCascadedDefault(selectedOptions[selectedOptions.length - 1].label);
 	};
 
 	const displayRender = (labels: string[]) => labels[labels.length - 1];
 
-	const onFinish = (value: object) => {
+	const onFinish = (value: any) => {
 		console.log(value);
 	};
 
 	return (
 		<Form initialValues={list[0]} name="form_item_path" layout="vertical" onFinish={onFinish}>
 			<Space size="large" wrap>
-				<Form.Item name="title" label="路由名称" rules={[{ required: true }]}>
+				<Form.Item name="title" label="路由名称" rules={[{ required: true, message: "请输入路由名称" }]}>
 					<Input style={{ width: 250 }} />
 				</Form.Item>
-				<Form.Item name="path" label="路由路径" rules={[{ required: true }]}>
+				<Form.Item name="path" label="路由路径" rules={[{ required: true, message: "路由路径" }]}>
 					<Input style={{ width: 250 }} />
 				</Form.Item>
 				<Form.Item label="图标">
 					<Select defaultValue="icon-shangdian" style={{ width: 250 }}>
-						{glyphs.map((item, value) => {
+						{glyphs.map(item => {
 							return (
-								<Select.Option key={value} value={css_prefix_text + item.font_class}>
+								<Select.Option key={item.icon_id} value={css_prefix_text + item.font_class}>
 									<Space>
 										<BasicIcon type={css_prefix_text + item.font_class} />
 										{css_prefix_text + item.font_class}
@@ -96,6 +96,7 @@ const BasicForm = ({ list, btnObj }: Props) => {
 						displayRender={displayRender}
 						onChange={onChange}
 						maxTagCount="responsive"
+						changeOnSelect
 					/>
 				</Form.Item>
 			</Space>
