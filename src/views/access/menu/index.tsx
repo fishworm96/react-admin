@@ -11,8 +11,8 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { tableColumns } from "./model";
 
-type Record = {
-	id: string;
+export type BtnObj = {
+	id: number;
 	icon: string;
 	module_id: number;
 	path: string;
@@ -20,12 +20,12 @@ type Record = {
 };
 
 const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
-	const [btnId, setBtnId] = useState<number>(0);
+	const [btnObj, setBtnObj] = useState<BtnObj>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	const onUpdate = (btnObj: Record) => {
+	const onUpdate = (btnObj: BtnObj) => {
 		setIsModalOpen(true);
-		setBtnId(btnObj.module_id);
+		setBtnObj(btnObj);
 	};
 
 	const handleOk = () => {
@@ -39,7 +39,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const optionRender: ITableOptions<object> = (_, record) => {
 		return (
 			<Space wrap>
-				<UpdateBtn onClick={() => onUpdate(record as Record)} />
+				<UpdateBtn onClick={() => onUpdate(record as BtnObj)} />
 				<DeleteBtn />
 			</Space>
 		);
@@ -53,7 +53,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 				</Button>
 				<BasicTable columns={tableColumns(optionRender)} dataSource={menuList!} />
 				<BasicModal width={1000} title={"编辑"} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-					<BasicForm list={menuList!} btnId={btnId} />
+					<BasicForm list={menuList!} btnObj={btnObj!} />
 				</BasicModal>
 			</>
 		</BasicContent>

@@ -1,3 +1,4 @@
+import { BtnObj } from "@/views/access/menu";
 import { Cascader, Form, FormProps, Input, Select, Space } from "antd";
 import { useEffect, useState } from "react";
 import BasicIcon from "../Icon";
@@ -5,7 +6,7 @@ import icons from "../Icon/icons.json";
 
 interface BasicForm extends FormProps {
 	list: Menu.MenuOptions[];
-	btnId: number;
+	btnObj: BtnObj;
 }
 
 interface CascadedOptions {
@@ -14,13 +15,13 @@ interface CascadedOptions {
 	children?: CascadedOptions[];
 }
 
-const BasicForm = ({ list, btnId }: BasicForm) => {
-	const [cascadedDefault, setCascadedDefault] = useState<string[]>(["根目录"]);
+const BasicForm = ({ list, btnObj }: BasicForm) => {
+	const [cascadedDefault, setCascadedDefault] = useState<string>("根目录");
 	const { css_prefix_text, glyphs } = icons;
 
 	useEffect(() => {
-		getParentName(btnId);
-	}, [btnId]);
+		getParentName(btnObj, list);
+	}, [btnObj]);
 
 	const cascadedOptions = (list: Menu.MenuOptions[]): CascadedOptions[] => {
 		const lists = list.map(item => {
@@ -36,18 +37,19 @@ const BasicForm = ({ list, btnId }: BasicForm) => {
 		return lists;
 	};
 
-	const getParentName = (btnId: number) => {
+	const getParentName = (btnObj: BtnObj, list: Menu.MenuOptions[], name?: string) => {
 		list.forEach(item => {
-			const { title, id, module_id } = item;
-			if (id === btnId) {
-				setCascadedDefault([title]);
-				console.log("123" + cascadedDefault, title);
+			const { title, id, children } = item;
+			if (btnObj.module_id === 0) {
+				setCascadedDefault("根目录");
 				return;
 			}
-			if (module_id === 0) {
-				setCascadedDefault(["根目录"]);
-				// console.log(cascadedDefault);
+			if (id === btnObj.id && name) {
+				setCascadedDefault(name);
 				return;
+			}
+			if (children && children.length) {
+				getParentName(btnObj, children, title);
 			}
 		});
 	};
@@ -59,7 +61,7 @@ const BasicForm = ({ list, btnId }: BasicForm) => {
 	const displayRender = (labels: string[]) => labels[labels.length - 1];
 
 	const onFinish = (value: object) => {
-		console.log(value, btnId);
+		console.log(value);
 	};
 
 	return (
@@ -88,7 +90,8 @@ const BasicForm = ({ list, btnId }: BasicForm) => {
 				<Form.Item label="父节点ID">
 					<Cascader
 						style={{ width: 250 }}
-						defaultValue={[cascadedDefault]}
+						// defaultValue={[cascadedDefault]}
+						value={[cascadedDefault]}
 						options={cascadedOptions(list)}
 						expandTrigger="hover"
 						displayRender={displayRender}
