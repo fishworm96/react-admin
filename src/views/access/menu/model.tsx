@@ -1,4 +1,5 @@
 export interface TableColumns {
+	id?: number;
 	key: string;
 	title: string;
 	module_id: number;

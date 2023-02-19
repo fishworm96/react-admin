@@ -1,6 +1,6 @@
 import { BtnObj } from "@/views/access/menu";
 import { Cascader, Form, FormProps, Input, Select, Space } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import BasicIcon from "../Icon";
 import icons from "../Icon/icons.json";
 
@@ -16,7 +16,8 @@ interface CascadedOptions {
 }
 
 const BasicForm = ({ list, btnObj }: Props) => {
-	const [cascadedDefault, setCascadedDefault] = useState<string>("根目录");
+	const [form] = Form.useForm();
+	// const [parentName, setParentName] = useState<string>("根目录");
 	const { css_prefix_text, glyphs } = icons;
 
 	useEffect(() => {
@@ -41,11 +42,11 @@ const BasicForm = ({ list, btnObj }: Props) => {
 		list.forEach(item => {
 			const { id, children } = item;
 			if (btnObj.module_id === 0) {
-				setCascadedDefault("根目录");
+				form.setFieldsValue({ ...item, parentName: "根目录" });
 				return;
 			}
 			if (id === btnObj.id && parent?.title) {
-				setCascadedDefault(parent?.title);
+				form.setFieldsValue({ ...item, parentName: parent?.title });
 				return;
 			}
 			if (children && children.length) {
@@ -55,7 +56,11 @@ const BasicForm = ({ list, btnObj }: Props) => {
 	};
 
 	const onChange = (value: any, selectedOptions: any) => {
-		setCascadedDefault(selectedOptions[selectedOptions.length - 1].label);
+		console.log(value, selectedOptions);
+	};
+
+	const changeSelectHandler = (value: { value: string; label: React.ReactNode }) => {
+		console.log(value);
 	};
 
 	const displayRender = (labels: string[]) => labels[labels.length - 1];
@@ -65,16 +70,16 @@ const BasicForm = ({ list, btnObj }: Props) => {
 	};
 
 	return (
-		<Form initialValues={list[0]} name="form_item_path" layout="vertical" onFinish={onFinish}>
+		<Form form={form} name="form_item_path" layout="vertical" onFinish={onFinish}>
 			<Space size="large" wrap>
 				<Form.Item name="title" label="路由名称" rules={[{ required: true, message: "请输入路由名称" }]}>
 					<Input style={{ width: 250 }} />
 				</Form.Item>
-				<Form.Item name="path" label="路由路径" rules={[{ required: true, message: "路由路径" }]}>
+				<Form.Item name="path" label="路由路径" rules={[{ required: true, message: "请输入路由路径" }]}>
 					<Input style={{ width: 250 }} />
 				</Form.Item>
-				<Form.Item label="图标">
-					<Select defaultValue="icon-shangdian" style={{ width: 250 }}>
+				<Form.Item name="icon" label="图标">
+					<Select onChange={changeSelectHandler} style={{ width: 250 }}>
 						{glyphs.map(item => {
 							return (
 								<Select.Option key={item.icon_id} value={css_prefix_text + item.font_class}>
@@ -87,10 +92,9 @@ const BasicForm = ({ list, btnObj }: Props) => {
 						})}
 					</Select>
 				</Form.Item>
-				<Form.Item label="父节点ID">
+				<Form.Item name="parentName" label="父节点名称">
 					<Cascader
 						style={{ width: 250 }}
-						value={[cascadedDefault]}
 						options={cascadedOptions(list)}
 						expandTrigger="hover"
 						displayRender={displayRender}
