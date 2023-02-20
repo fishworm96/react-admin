@@ -1,42 +1,34 @@
-import { BtnObj } from "@/views/access/menu";
+import { BtnObj, CascadedOptions } from "@/views/access/menu";
 import { Cascader, Form, FormProps, Input, Select, Space } from "antd";
-import { useEffect } from "react";
+import { Ref, useEffect, useImperativeHandle } from "react";
 import BasicIcon from "../Icon";
 import icons from "../Icon/icons.json";
 
+export interface IFormFn {
+	handleSubmit: () => void;
+}
+
 interface Props extends FormProps {
 	list: Menu.MenuOptions[];
+	options: CascadedOptions[];
 	btnObj: BtnObj;
+	formRef: Ref<IFormFn>;
+	handleFinish: FormProps["onFinish"];
 }
 
-interface CascadedOptions {
-	label: string;
-	value: string | number;
-	children?: CascadedOptions[];
-}
-
-const BasicForm = ({ list, btnObj }: Props) => {
+const BasicForm = ({ list, btnObj, options, formRef, handleFinish }: Props) => {
 	const [form] = Form.useForm();
-	// const [parentName, setParentName] = useState<string>("根目录");
 	const { css_prefix_text, glyphs } = icons;
 
 	useEffect(() => {
 		getParentName(btnObj, list);
 	}, [btnObj]);
 
-	const cascadedOptions = (list: Menu.MenuOptions[]): CascadedOptions[] => {
-		const lists = list.map(item => {
-			const { id, title, module_id, children } = item;
-			const cascadedOption: CascadedOptions = { label: title, value: `${module_id}_${id}` };
-
-			if (children && children.length) {
-				cascadedOption.children = cascadedOptions(children);
-			}
-			return cascadedOption;
-		});
-		if (list[0].module_id === 0) lists.unshift({ label: "根目录", value: 0 });
-		return lists;
-	};
+	useImperativeHandle(formRef, () => ({
+		handleSubmit: () => {
+			form.submit();
+		}
+	}));
 
 	const getParentName = (btnObj: BtnObj, list: Menu.MenuOptions[], parent?: BtnObj) => {
 		list.forEach(item => {
@@ -66,7 +58,9 @@ const BasicForm = ({ list, btnObj }: Props) => {
 	const displayRender = (labels: string[]) => labels[labels.length - 1];
 
 	const onFinish = (value: any) => {
-		console.log(value);
+		if (handleFinish) {
+			handleFinish(value);
+		}
 	};
 
 	return (
@@ -95,7 +89,7 @@ const BasicForm = ({ list, btnObj }: Props) => {
 				<Form.Item name="parentName" label="父节点名称">
 					<Cascader
 						style={{ width: 250 }}
-						options={cascadedOptions(list)}
+						options={options}
 						expandTrigger="hover"
 						displayRender={displayRender}
 						onChange={onChange}

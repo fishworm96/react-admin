@@ -1,8 +1,8 @@
-import { Button } from "antd";
+import { Button, ButtonProps } from "antd";
 
-const DeleteBtn = () => {
+const DeleteBtn = (props: ButtonProps) => {
 	return (
-		<Button type="primary" danger>
+		<Button type="primary" {...props} danger>
 			删除
 		</Button>
 	);

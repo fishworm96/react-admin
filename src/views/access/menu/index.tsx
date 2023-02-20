@@ -1,13 +1,13 @@
 import { UpdateBtn } from "@/components/Button";
 import DeleteBtn from "@/components/Button/components/DeleteBtn";
 import BasicContent from "@/components/Content";
-import BasicForm from "@/components/Form";
+import BasicForm, { IFormFn } from "@/components/Form";
 import BasicModal from "@/components/Modal";
 import BasicTable from "@/components/Table";
 import { MenuState } from "@/redux/interface";
 import { PlusCircleTwoTone } from "@ant-design/icons";
-import { Button, Space } from "antd";
-import React, { useEffect, useState } from "react";
+import { Button, message, Space } from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { TableColumns, tableColumns } from "./model";
 
@@ -19,7 +19,14 @@ export interface BtnObj {
 	title: string;
 }
 
+export interface CascadedOptions {
+	label: string;
+	value: string | number;
+	children?: CascadedOptions[];
+}
+
 const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
+	const createFormRef = useRef<IFormFn>(null);
 	const [btnObj, setBtnObj] = useState<BtnObj>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [tableData, seTableData] = useState<TableColumns[]>([]);
@@ -48,23 +55,53 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	};
 
 	const onUpdate = (btnObj: BtnObj) => {
+		console.log(btnObj);
 		setIsModalOpen(true);
 		setBtnObj(btnObj);
 	};
 
 	const handleOk = () => {
-		console.log("123");
+		createFormRef.current?.handleSubmit();
+	};
+
+	const handleCreate = (value: any) => {
+		try {
+			setIsModalOpen(false);
+			console.log(value);
+			message.success("修改成功！");
+		} catch {
+			setIsModalOpen(false);
+		}
+	};
+
+	const onDelete = (id: number) => {
+		console.log(id, menuList);
+		menuList = menuList?.filter(item => item.id != id);
 	};
 
 	const handleCancel = () => {
 		setIsModalOpen(false);
 	};
 
+	const cascadedOptions = (list: Menu.MenuOptions[]): CascadedOptions[] => {
+		const lists = list.map(item => {
+			const { id, title, module_id, children } = item;
+			const cascadedOption: CascadedOptions = { label: title, value: `${module_id}_${id}` };
+
+			if (children && children.length) {
+				cascadedOption.children = cascadedOptions(children);
+			}
+			return cascadedOption;
+		});
+		if (list[0].module_id === 0) lists.unshift({ label: "根目录", value: 0 });
+		return lists;
+	};
+
 	const optionRender: ITableOptions<object> = (_, record) => {
 		return (
 			<Space wrap>
 				<UpdateBtn onClick={() => onUpdate(record as BtnObj)} />
-				<DeleteBtn />
+				<DeleteBtn onClick={() => onDelete((record as BtnObj).id)} />
 			</Space>
 		);
 	};
@@ -77,7 +114,13 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 				</Button>
 				<BasicTable columns={tableColumns(optionRender)} dataSource={tableData} />
 				<BasicModal width={1000} title={"编辑"} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-					<BasicForm list={menuList!} btnObj={btnObj!} />
+					<BasicForm
+						formRef={createFormRef}
+						options={cascadedOptions(menuList!)}
+						list={menuList!}
+						btnObj={btnObj!}
+						handleFinish={handleCreate}
+					/>
 				</BasicModal>
 			</>
 		</BasicContent>
