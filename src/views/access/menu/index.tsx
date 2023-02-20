@@ -1,12 +1,11 @@
-import { UpdateBtn } from "@/components/Button";
-import DeleteBtn, { callbackParams } from "@/components/Button/components/DeleteBtn";
+import { CreateBtn, DeleteBtn, UpdateBtn } from "@/components/Button";
+import { callbackParams } from "@/components/Button/components/DeleteBtn";
 import BasicContent from "@/components/Content";
 import BasicForm, { IFormFn } from "@/components/Form";
 import BasicModal from "@/components/Modal";
 import BasicTable from "@/components/Table";
 import { MenuState } from "@/redux/interface";
-import { PlusCircleTwoTone } from "@ant-design/icons";
-import { Button, message, Space } from "antd";
+import { message, Space } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { TableColumns, tableColumns } from "./model";
@@ -55,7 +54,6 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	};
 
 	const onUpdate = (btnObj: BtnObj) => {
-		console.log(btnObj);
 		setIsModalOpen(true);
 		setBtnObj(btnObj);
 	};
@@ -79,10 +77,6 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 			message.success("删除成功！");
 			console.log(id, menuList);
 		}
-	};
-
-	const handleCancel = () => {
-		setIsModalOpen(false);
 	};
 
 	const cascadedOptions = (list: Menu.MenuOptions[]): CascadedOptions[] => {
@@ -111,11 +105,9 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	return (
 		<BasicContent>
 			<>
-				<Button type="primary" icon={<PlusCircleTwoTone />}>
-					新增
-				</Button>
+				<CreateBtn />
 				<BasicTable columns={tableColumns(optionRender)} dataSource={tableData} />
-				<BasicModal width={1000} title={"编辑"} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+				<BasicModal width={1000} title={"编辑"} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
 					<BasicForm
 						formRef={createFormRef}
 						options={cascadedOptions(menuList!)}
