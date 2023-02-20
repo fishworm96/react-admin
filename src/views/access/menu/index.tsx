@@ -1,5 +1,5 @@
 import { UpdateBtn } from "@/components/Button";
-import DeleteBtn from "@/components/Button/components/DeleteBtn";
+import DeleteBtn, { callbackParams } from "@/components/Button/components/DeleteBtn";
 import BasicContent from "@/components/Content";
 import BasicForm, { IFormFn } from "@/components/Form";
 import BasicModal from "@/components/Modal";
@@ -74,9 +74,11 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 		}
 	};
 
-	const onDelete = (id: number) => {
-		console.log(id, menuList);
-		menuList = menuList?.filter(item => item.id != id);
+	const onDelete = ({ isOk, id }: callbackParams) => {
+		if (isOk) {
+			message.success("删除成功！");
+			console.log(id, menuList);
+		}
 	};
 
 	const handleCancel = () => {
@@ -101,7 +103,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 		return (
 			<Space wrap>
 				<UpdateBtn onClick={() => onUpdate(record as BtnObj)} />
-				<DeleteBtn onClick={() => onDelete((record as BtnObj).id)} />
+				<DeleteBtn id={(record as BtnObj).id.toString()} handleDelete={onDelete} />
 			</Space>
 		);
 	};
