@@ -9,10 +9,10 @@ export interface IFormFn {
 }
 
 interface Props extends FormProps {
-	list?: Menu.MenuOptions[];
-	options?: CascadedOptions[];
-	btnObj?: BtnObj;
-	formRef?: Ref<IFormFn>;
+	list: Menu.MenuOptions[];
+	options: CascadedOptions[];
+	btnObj: BtnObj;
+	formRef: Ref<IFormFn>;
 	handleFinish: FormProps["onFinish"];
 }
 
@@ -21,7 +21,7 @@ const BasicForm = ({ list, btnObj, options, formRef, handleFinish }: Props) => {
 	const { css_prefix_text, glyphs } = icons;
 
 	useEffect(() => {
-		getParentName(btnObj!, list!);
+		getParentName(btnObj, list);
 	}, [btnObj]);
 
 	useImperativeHandle(formRef, () => ({

@@ -5,7 +5,12 @@ import { Modal, ModalProps } from "antd";
 // }
 
 const BasicModal = (props: ModalProps) => {
-	return <Modal {...props}>{props.children}</Modal>;
+	return (
+		<Modal okText={"确定"} cancelText={"取消"} {...props}>
+			{" "}
+			{props.children}
+		</Modal>
+	);
 };
 
 export default BasicModal;
