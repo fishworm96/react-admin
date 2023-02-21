@@ -11,18 +11,26 @@ export interface IFormFn {
 }
 
 interface Props extends FormProps {
-	list: Menu.MenuOptions[];
+	list?: Menu.MenuOptions[];
 	options: CascadedOptions[];
 	data: Data;
 	formRef: Ref<IFormFn>;
 	handleFinish: FormProps["onFinish"];
 }
 
-const BasicForm = ({ list, data, options, formRef, handleFinish }: Props) => {
+const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 	const [form] = Form.useForm();
 	const { css_prefix_text, glyphs } = icons;
-
-	useEffect(() => {}, [list]);
+	console.log(data);
+	useEffect(() => {
+		if (data && data.module_id === 0) {
+			form.setFieldsValue({ ...data, parentName: "根目录" });
+			return;
+		}
+		if (data) {
+			form.setFieldsValue({ ...data, parentName: data.title });
+		}
+	}, [form, data]);
 
 	useImperativeHandle(formRef, () => ({
 		getValue: (key: string) => {
@@ -53,7 +61,7 @@ const BasicForm = ({ list, data, options, formRef, handleFinish }: Props) => {
 	};
 
 	return (
-		<Form form={form} initialValues={data} name="form_item_path" layout="vertical" onFinish={onFinish}>
+		<Form form={form} name="form_item_path" layout="vertical" onFinish={onFinish}>
 			<Space size="large" wrap>
 				<Form.Item name="title" label="路由名称" rules={[{ required: true, message: "请输入路由名称" }]}>
 					<Input style={{ width: 250 }} />

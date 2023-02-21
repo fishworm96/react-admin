@@ -1,3 +1,4 @@
+import { getMenuById } from "@/api/modules/system";
 import { CreateBtn, DeleteBtn, UpdateBtn } from "@/components/Button";
 import { callbackParams } from "@/components/Button/components/DeleteBtn";
 import BasicContent from "@/components/Content";
@@ -55,15 +56,19 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	};
 
 	const onCreate = () => {
-		setIsModalOpen(true);
 		createFormRef.current?.handleReset();
+		setIsModalOpen(true);
 	};
 
-	const onUpdate = (id: number) => {
+	const onUpdate = async (id: number) => {
 		setIsModalOpen(true);
 		if (id) {
-			console.log(id);
-			setData({ id: 1, module_id: 0, icon: "", path: "", title: "" });
+			try {
+				const { data } = await getMenuById(id);
+				setData(data!);
+			} catch {
+				message.error("获取数据失败，请重试");
+			}
 		}
 	};
 
