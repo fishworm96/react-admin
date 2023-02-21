@@ -1,4 +1,4 @@
-import { BtnObj, CascadedOptions } from "@/views/access/menu";
+import { CascadedOptions, Data } from "@/views/access/menu";
 import { Cascader, Form, FormProps, Input, Select, Space } from "antd";
 import { Ref, useEffect, useImperativeHandle } from "react";
 import BasicIcon from "../Icon";
@@ -6,49 +6,38 @@ import icons from "../Icon/icons.json";
 
 export interface IFormFn {
 	handleSubmit: () => void;
+	handleReset: () => void;
+	getValue: (key: string) => unknown;
 }
 
 interface Props extends FormProps {
 	list: Menu.MenuOptions[];
 	options: CascadedOptions[];
-	btnObj: BtnObj;
+	data: Data;
 	formRef: Ref<IFormFn>;
 	handleFinish: FormProps["onFinish"];
 }
 
-const BasicForm = ({ list, btnObj, options, formRef, handleFinish }: Props) => {
+const BasicForm = ({ list, data, options, formRef, handleFinish }: Props) => {
 	const [form] = Form.useForm();
 	const { css_prefix_text, glyphs } = icons;
 
-	useEffect(() => {
-		getParentName(btnObj, list);
-	}, [btnObj]);
+	useEffect(() => {}, [list]);
 
 	useImperativeHandle(formRef, () => ({
+		getValue: (key: string) => {
+			return form.getFieldValue(key);
+		},
+		handleReset: () => {
+			form.resetFields();
+		},
 		handleSubmit: () => {
 			form.submit();
 		}
 	}));
 
-	const getParentName = (btnObj: BtnObj, list: Menu.MenuOptions[], parent?: BtnObj) => {
-		list.forEach(item => {
-			const { id, children } = item;
-			if (btnObj.module_id === 0) {
-				form.setFieldsValue({ ...item, parentName: "根目录" });
-				return;
-			}
-			if (id === btnObj.id && parent?.title) {
-				form.setFieldsValue({ ...item, parentName: parent?.title });
-				return;
-			}
-			if (children && children.length) {
-				getParentName(btnObj, children, item);
-			}
-		});
-	};
-
 	const onChange = (value: any, selectedOptions: any) => {
-		console.log(value, selectedOptions);
+		console.log("onChange:", value, selectedOptions);
 	};
 
 	const changeSelectHandler = (value: { value: string; label: React.ReactNode }) => {
@@ -64,7 +53,7 @@ const BasicForm = ({ list, btnObj, options, formRef, handleFinish }: Props) => {
 	};
 
 	return (
-		<Form form={form} name="form_item_path" layout="vertical" onFinish={onFinish}>
+		<Form form={form} initialValues={data} name="form_item_path" layout="vertical" onFinish={onFinish}>
 			<Space size="large" wrap>
 				<Form.Item name="title" label="路由名称" rules={[{ required: true, message: "请输入路由名称" }]}>
 					<Input style={{ width: 250 }} />
@@ -96,6 +85,9 @@ const BasicForm = ({ list, btnObj, options, formRef, handleFinish }: Props) => {
 						maxTagCount="responsive"
 						changeOnSelect
 					/>
+				</Form.Item>
+				<Form.Item name="module_id">
+					<div></div>
 				</Form.Item>
 			</Space>
 		</Form>

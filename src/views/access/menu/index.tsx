@@ -10,10 +10,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { TableColumns, tableColumns } from "./model";
 
-export interface BtnObj {
+export interface Data {
 	id: number;
-	icon: string;
 	module_id: number;
+	icon: string;
 	path: string;
 	title: string;
 }
@@ -22,11 +22,12 @@ export interface CascadedOptions {
 	label: string;
 	value: string | number;
 	children?: CascadedOptions[];
+	disabled?: boolean;
 }
 
 const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const createFormRef = useRef<IFormFn>(null);
-	const [btnObj, setBtnObj] = useState<BtnObj>();
+	const [data, setData] = useState<Data>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [tableData, seTableData] = useState<TableColumns[]>([]);
 
@@ -55,12 +56,15 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 
 	const onCreate = () => {
 		setIsModalOpen(true);
-		setBtnObj({ id: 0, icon: "", module_id: 0, path: "", title: "" });
+		createFormRef.current?.handleReset();
 	};
 
-	const onUpdate = (btnObj: BtnObj) => {
+	const onUpdate = (id: number) => {
 		setIsModalOpen(true);
-		setBtnObj(btnObj);
+		if (id) {
+			console.log(id);
+			setData({ id: 1, module_id: 0, icon: "", path: "", title: "" });
+		}
 	};
 
 	const handleOk = () => {
@@ -101,8 +105,8 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const optionRender: ITableOptions<object> = (_, record) => {
 		return (
 			<Space wrap>
-				<UpdateBtn onClick={() => onUpdate(record as BtnObj)} />
-				<DeleteBtn id={(record as BtnObj).id.toString()} handleDelete={onDelete} />
+				<UpdateBtn onClick={() => onUpdate((record as Menu.MenuOptions).id)} />
+				<DeleteBtn id={(record as Menu.MenuOptions).id.toString()} handleDelete={onDelete} />
 			</Space>
 		);
 	};
@@ -117,7 +121,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 						formRef={createFormRef}
 						options={cascadedOptions(menuList!)}
 						list={menuList!}
-						btnObj={btnObj!}
+						data={data!}
 						handleFinish={handleCreate}
 					/>
 				</BasicModal>
