@@ -53,6 +53,11 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 		});
 	};
 
+	const onCreate = () => {
+		setIsModalOpen(true);
+		setBtnObj({ id: 0, icon: "", module_id: 0, path: "", title: "" });
+	};
+
 	const onUpdate = (btnObj: BtnObj) => {
 		setIsModalOpen(true);
 		setBtnObj(btnObj);
@@ -105,7 +110,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	return (
 		<BasicContent>
 			<>
-				<CreateBtn />
+				<CreateBtn onCreate={onCreate} />
 				<BasicTable columns={tableColumns(optionRender)} dataSource={tableData} />
 				<BasicModal width={1000} title={"编辑"} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
 					<BasicForm

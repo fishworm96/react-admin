@@ -1,4 +1,4 @@
-import { getAuthorButtons } from "@/api/modules/login";
+// import { getAuthorButtons } from "@/api/modules/login";
 import { store } from "@/redux";
 import { setAuthButtons } from "@/redux/modules/auth/actions";
 import { updateCollapse } from "@/redux/modules/menu/action";
@@ -13,16 +13,16 @@ import "./index.less";
 
 const LayoutIndex = (props: any) => {
 	const { Sider, Content } = Layout;
-	const { isCollapse, updateCollapse, setAuthButtons } = props;
+	const { isCollapse, updateCollapse } = props;
 	const { token } = store.getState().global;
 	if (!token) return <Navigate to="/login" replace />;
 
 	// 获取按钮权限列表
-	const getAuthButtonsList = async () => {
-		const { data } = await getAuthorButtons();
-		console.log(data);
-		setAuthButtons(data!);
-	};
+	// const getAuthButtonsList = async () => {
+	// 	const { data } = await getAuthorButtons();
+	// 	console.log(data);
+	// 	setAuthButtons(data!);
+	// };
 
 	// 监听窗口大小变化
 	const listeningWindow = () => {
@@ -37,7 +37,7 @@ const LayoutIndex = (props: any) => {
 
 	useEffect(() => {
 		listeningWindow();
-		getAuthButtonsList();
+		// getAuthButtonsList();
 	}, []);
 
 	return (

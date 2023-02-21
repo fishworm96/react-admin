@@ -1,10 +1,14 @@
 import { PlusCircleTwoTone } from "@ant-design/icons";
 import { Button } from "antd";
 
-const CreateBtn = () => {
+interface Props {
+	onCreate: () => void;
+}
+
+const CreateBtn = ({ onCreate }: Props) => {
 	return (
 		<>
-			<Button type="primary" icon={<PlusCircleTwoTone />}>
+			<Button onClick={onCreate} type="primary" icon={<PlusCircleTwoTone />}>
 				新增
 			</Button>
 		</>

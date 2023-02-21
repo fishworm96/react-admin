@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Menu, MenuProps, Spin } from "antd";
-import { setBreadcrumbList } from "@/redux/modules/breadcrumb/action";
-import Logo from "./components/Logo";
-import { connect } from "react-redux";
-import React from "react";
 import { getMenuList } from "@/api/modules/login";
-import { findAllBreadcrumb, getOpenKeys, handleRouter, searchRoute } from "@/utils/util";
-import * as Icons from "@ant-design/icons";
-import "./index.less";
-import { setMenuList } from "@/redux/modules/menu/action";
+import BasicIcon from "@/components/Icon";
 import { setAuthRouter } from "@/redux/modules/auth/actions";
+import { setBreadcrumbList } from "@/redux/modules/breadcrumb/action";
+import { setMenuList } from "@/redux/modules/menu/action";
+import { findAllBreadcrumb, getOpenKeys, handleRouter, searchRoute } from "@/utils/util";
+import { Menu, MenuProps, Spin } from "antd";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import Logo from "./components/Logo";
+import "./index.less";
 
 const LayoutMenu = (props: any) => {
 	const { pathname } = useLocation();
@@ -51,9 +50,8 @@ const LayoutMenu = (props: any) => {
 	};
 
 	// 动态渲染 Icon 图标
-	const customIcons: { [key: string]: any } = Icons;
 	const addIcon = (name: string) => {
-		return React.createElement(customIcons[name]);
+		return <BasicIcon type={name} color="white" />;
 	};
 
 	// 处理后台返回菜单 key 值为 antd 菜单需要的 key 值
