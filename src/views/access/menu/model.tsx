@@ -2,6 +2,7 @@ export interface TableColumns {
 	id?: number;
 	key: string;
 	title: string;
+	type: number;
 	module_id: number;
 	path: string;
 	icon: string;
@@ -17,8 +18,8 @@ export const tableColumns = (optionRender: ITableOptions<TableColumns>) => {
 		},
 		{
 			title: "菜单等级",
-			dataIndex: "module_id",
-			key: "module_id"
+			dataIndex: "type",
+			key: "type"
 		},
 		{
 			title: "路径",

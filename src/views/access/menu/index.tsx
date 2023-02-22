@@ -1,4 +1,4 @@
-import { getMenuById } from "@/api/modules/system";
+import { AddMenu, getMenuById } from "@/api/modules/system";
 import { CreateBtn, DeleteBtn, UpdateBtn } from "@/components/Button";
 import { callbackParams } from "@/components/Button/components/DeleteBtn";
 import BasicContent from "@/components/Content";
@@ -14,9 +14,12 @@ import { TableColumns, tableColumns } from "./model";
 export interface Data {
 	id: number;
 	module_id: number;
+	parentId: number;
+	type: number;
 	icon: string;
 	path: string;
 	title: string;
+	parentName: string;
 }
 
 export interface CascadedOptions {
@@ -38,14 +41,15 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 
 	const changeTableData = (list: Menu.MenuOptions[]): TableColumns[] => {
 		return list.map((item, index) => {
-			const { id, title, module_id, children, path, icon } = item;
+			const { id, title, module_id, children, path, icon, type } = item;
 			const cascadedOption: TableColumns = {
-				id: id,
+				id,
 				key: `${module_id}_${index.toString()}`,
-				title: title,
-				module_id: module_id,
-				path: path,
-				icon: icon
+				type,
+				title,
+				module_id,
+				path,
+				icon
 			};
 
 			if (children && children.length) {
@@ -65,7 +69,8 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 		if (id) {
 			try {
 				const { data } = await getMenuById(id);
-				setData(data!);
+				console.log(data);
+				setData(data);
 			} catch {
 				message.error("获取数据失败，请重试");
 			}
@@ -79,7 +84,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const handleCreate = (value: any) => {
 		try {
 			setIsModalOpen(false);
-			console.log(value);
+			AddMenu(value);
 			message.success("修改成功！");
 		} catch {
 			setIsModalOpen(false);
@@ -126,7 +131,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 						formRef={createFormRef}
 						options={cascadedOptions(menuList!)}
 						list={menuList!}
-						data={data!}
+						data={data}
 						handleFinish={handleCreate}
 					/>
 				</BasicModal>

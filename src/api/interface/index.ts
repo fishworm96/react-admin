@@ -36,3 +36,13 @@ export namespace Login {
 		[propName: string]: any;
 	}
 }
+
+export namespace System {
+	export interface AddMenu {
+		parent_id: number;
+		parent_name: string;
+		icon: string;
+		path: string;
+		title: string;
+	}
+}

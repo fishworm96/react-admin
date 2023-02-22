@@ -6,6 +6,9 @@ declare namespace Menu {
 		id: number;
 		module_id: number;
 		icon: string;
+		type: number;
+		parentId?: number;
+		parentName?: string;
 		isLink?: string;
 		close?: boolean;
 		children?: MenuOptions[];

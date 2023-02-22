@@ -13,7 +13,7 @@ export interface IFormFn {
 interface Props extends FormProps {
 	list?: Menu.MenuOptions[];
 	options: CascadedOptions[];
-	data: Data;
+	data?: Data;
 	formRef: Ref<IFormFn>;
 	handleFinish: FormProps["onFinish"];
 }
@@ -21,15 +21,9 @@ interface Props extends FormProps {
 const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 	const [form] = Form.useForm();
 	const { css_prefix_text, glyphs } = icons;
-	console.log(data);
+
 	useEffect(() => {
-		if (data && data.module_id === 0) {
-			form.setFieldsValue({ ...data, parentName: "根目录" });
-			return;
-		}
-		if (data) {
-			form.setFieldsValue({ ...data, parentName: data.title });
-		}
+		form.setFieldsValue(data);
 	}, [form, data]);
 
 	useImperativeHandle(formRef, () => ({
@@ -45,7 +39,13 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 	}));
 
 	const onChange = (value: any, selectedOptions: any) => {
-		console.log("onChange:", value, selectedOptions);
+		console.log(selectedOptions[selectedOptions.length - 1]);
+		let parent_name: string = selectedOptions[selectedOptions.length - 1].label || "根目录";
+		let parent_id: number =
+			selectedOptions[selectedOptions.length - 1].value === 0
+				? selectedOptions[selectedOptions.length - 1].value
+				: +selectedOptions[selectedOptions.length - 1].value.split("_")[1];
+		form.setFieldsValue({ parent_name, parent_id });
 	};
 
 	const changeSelectHandler = (value: { value: string; label: React.ReactNode }) => {
@@ -69,6 +69,9 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 				<Form.Item name="path" label="路由路径" rules={[{ required: true, message: "请输入路由路径" }]}>
 					<Input style={{ width: 250 }} />
 				</Form.Item>
+				<Form.Item name="type" label="菜单等级" rules={[{ required: true, message: "请输入路由路径" }]}>
+					<Input style={{ width: 250 }} />
+				</Form.Item>
 				<Form.Item name="icon" label="图标">
 					<Select onChange={changeSelectHandler} style={{ width: 250 }}>
 						{glyphs.map(item => {
@@ -83,7 +86,7 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 						})}
 					</Select>
 				</Form.Item>
-				<Form.Item name="parentName" label="父节点名称">
+				<Form.Item name="parent_name" label="父节点名称">
 					<Cascader
 						style={{ width: 250 }}
 						options={options}
@@ -94,7 +97,7 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 						changeOnSelect
 					/>
 				</Form.Item>
-				<Form.Item name="module_id">
+				<Form.Item name="parent_id">
 					<div></div>
 				</Form.Item>
 			</Space>
