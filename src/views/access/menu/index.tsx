@@ -1,4 +1,6 @@
-import { AddMenu, getMenuById } from "@/api/modules/system";
+import { System } from "@/api/interface";
+import { getMenuList } from "@/api/modules/login";
+import { createMenuById, deleteMenuById, getMenuById } from "@/api/modules/system";
 import { CreateBtn, DeleteBtn, UpdateBtn } from "@/components/Button";
 import { callbackParams } from "@/components/Button/components/DeleteBtn";
 import BasicContent from "@/components/Content";
@@ -33,11 +35,13 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const createFormRef = useRef<IFormFn>(null);
 	const [data, setData] = useState<Data>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [menuId, setMenuId] = useState<number | null>();
+	const [menuData, setMenuData] = useState(menuList);
 	const [tableData, seTableData] = useState<TableColumns[]>([]);
 
 	useEffect(() => {
-		seTableData(changeTableData(menuList!));
-	}, [menuList]);
+		seTableData(changeTableData(menuData!));
+	}, [menuData]);
 
 	const changeTableData = (list: Menu.MenuOptions[]): TableColumns[] => {
 		return list.map((item, index) => {
@@ -45,11 +49,11 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 			const cascadedOption: TableColumns = {
 				id,
 				key: `${module_id}_${index.toString()}`,
-				type,
-				title,
+				title: title,
 				module_id,
-				path,
-				icon
+				type,
+				path: path,
+				icon: icon
 			};
 
 			if (children && children.length) {
@@ -62,11 +66,13 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const onCreate = () => {
 		createFormRef.current?.handleReset();
 		setIsModalOpen(true);
+		setMenuId(null);
 	};
 
 	const onUpdate = async (id: number) => {
 		setIsModalOpen(true);
 		if (id) {
+			setMenuId(id);
 			try {
 				const { data } = await getMenuById(id);
 				console.log(data);
@@ -81,20 +87,30 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 		createFormRef.current?.handleSubmit();
 	};
 
-	const handleCreate = (value: any) => {
+	// 创建或更新菜单
+	const handleCreate = async (value: System.ReqUpdateMenu) => {
 		try {
 			setIsModalOpen(false);
-			AddMenu(value);
-			message.success("修改成功！");
+			if (menuId) {
+				// updateMenu(value);
+				message.success("修改成功！");
+			} else {
+				createMenuById(value);
+				message.success("添加成功！");
+			}
+			const { data } = await getMenuList();
+			setMenuData(data);
 		} catch {
 			setIsModalOpen(false);
 		}
 	};
 
-	const onDelete = ({ isOk, id }: callbackParams) => {
+	const onDelete = async ({ isOk, id }: callbackParams) => {
 		if (isOk) {
+			await deleteMenuById(id!);
+			const { data } = await getMenuList();
+			setMenuData(data);
 			message.success("删除成功！");
-			console.log(id, menuList);
 		}
 	};
 
@@ -116,7 +132,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 		return (
 			<Space wrap>
 				<UpdateBtn onClick={() => onUpdate((record as Menu.MenuOptions).id)} />
-				<DeleteBtn id={(record as Menu.MenuOptions).id.toString()} handleDelete={onDelete} />
+				<DeleteBtn id={(record as Menu.MenuOptions).id} handleDelete={onDelete} />
 			</Space>
 		);
 	};

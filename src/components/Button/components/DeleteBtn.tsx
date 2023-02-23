@@ -3,11 +3,11 @@ import { Button, Modal } from "antd";
 
 export interface callbackParams {
 	isOk: boolean;
-	id?: string;
+	id?: number;
 }
 
 interface Props {
-	id?: string;
+	id?: number;
 	handleDelete: (params: callbackParams) => void;
 }
 

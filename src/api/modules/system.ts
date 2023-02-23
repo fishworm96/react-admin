@@ -1,7 +1,6 @@
 import { PORT1 } from "@/api/config/servicePort";
 
 import http from "@/api";
-import { Data } from "@/views/access/menu";
 import { System } from "../interface";
 
 /**
@@ -11,9 +10,15 @@ import { System } from "../interface";
 
 // * 获取菜单列表
 export const getMenuById = (id: number) => {
-	return http.get<Data>(`${PORT1}/menu?id=${id}`);
+	return http.get<Menu.MenuOptions>(`${PORT1}/menu?id=${id}`);
 };
 
-export const AddMenu = (params: System.AddMenu) => {
-	return http.post<System.AddMenu>(`${PORT1}/menu`, params);
+// 根据id删除菜单
+export const deleteMenuById = (id: number) => {
+	return http.delete(`${PORT1}/menu/${id}`);
+};
+
+// 创建菜单
+export const createMenuById = (params: System.ReqUpdateMenu) => {
+	return http.post(`${PORT1}/menu`, params);
 };

@@ -1,6 +1,6 @@
 import { CascadedOptions, Data } from "@/views/access/menu";
 import { Cascader, Form, FormProps, Input, Select, Space } from "antd";
-import { Ref, useEffect, useImperativeHandle } from "react";
+import { ChangeEvent, Ref, useEffect, useImperativeHandle } from "react";
 import BasicIcon from "../Icon";
 import icons from "../Icon/icons.json";
 
@@ -39,13 +39,16 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 	}));
 
 	const onChange = (value: any, selectedOptions: any) => {
-		console.log(selectedOptions[selectedOptions.length - 1]);
-		let parent_name: string = selectedOptions[selectedOptions.length - 1].label || "根目录";
-		let parent_id: number =
+		let parent_id =
 			selectedOptions[selectedOptions.length - 1].value === 0
 				? selectedOptions[selectedOptions.length - 1].value
-				: +selectedOptions[selectedOptions.length - 1].value.split("_")[1];
-		form.setFieldsValue({ parent_name, parent_id });
+				: selectedOptions[selectedOptions.length - 1].value.split("_")[1];
+		let parent_name = selectedOptions[selectedOptions.length - 1].label;
+		form.setFieldsValue({ parent_id, parent_name });
+	};
+
+	const changeInputType = (e: ChangeEvent<HTMLInputElement>) => {
+		form.setFieldsValue({ type: +e.target.value });
 	};
 
 	const changeSelectHandler = (value: { value: string; label: React.ReactNode }) => {
@@ -69,8 +72,13 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 				<Form.Item name="path" label="路由路径" rules={[{ required: true, message: "请输入路由路径" }]}>
 					<Input style={{ width: 250 }} />
 				</Form.Item>
+<<<<<<< HEAD
 				<Form.Item name="type" label="菜单等级" rules={[{ required: true, message: "请输入路由路径" }]}>
 					<Input style={{ width: 250 }} />
+=======
+				<Form.Item name="type" label="菜单等级" rules={[{ required: true, message: "请输入菜单等级" }]}>
+					<Input type="number" min={1} onChange={changeInputType} style={{ width: 250 }} />
+>>>>>>> 42569252895f84ee9988cf6749e6d4aee6111be5
 				</Form.Item>
 				<Form.Item name="icon" label="图标">
 					<Select onChange={changeSelectHandler} style={{ width: 250 }}>
@@ -86,7 +94,11 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 						})}
 					</Select>
 				</Form.Item>
+<<<<<<< HEAD
 				<Form.Item name="parent_name" label="父节点名称">
+=======
+				<Form.Item name="parent_name" label="父节点名称" rules={[{ required: true, message: "请选择父节点名称" }]}>
+>>>>>>> 42569252895f84ee9988cf6749e6d4aee6111be5
 					<Cascader
 						style={{ width: 250 }}
 						options={options}

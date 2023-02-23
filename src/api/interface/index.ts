@@ -38,11 +38,12 @@ export namespace Login {
 }
 
 export namespace System {
-	export interface AddMenu {
-		parent_id: number;
-		parent_name: string;
-		icon: string;
-		path: string;
+	export interface ReqUpdateMenu {
 		title: string;
+		path: string;
+		type: number;
+		parentId: number;
+		id?: number;
+		icon?: string;
 	}
 }
