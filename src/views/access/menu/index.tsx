@@ -1,6 +1,6 @@
 import { System } from "@/api/interface";
 import { getMenuList } from "@/api/modules/login";
-import { createMenuById, deleteMenuById, getMenuById } from "@/api/modules/system";
+import { createMenuById, deleteMenuById, getMenuById, updateMenu } from "@/api/modules/system";
 import { CreateBtn, DeleteBtn, UpdateBtn } from "@/components/Button";
 import { callbackParams } from "@/components/Button/components/DeleteBtn";
 import BasicContent from "@/components/Content";
@@ -41,7 +41,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 
 	useEffect(() => {
 		seTableData(changeTableData(menuData!));
-	}, [menuData]);
+	}, [menuData, menuList]);
 
 	const changeTableData = (list: Menu.MenuOptions[]): TableColumns[] => {
 		return list.map((item, index) => {
@@ -75,7 +75,6 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 			setMenuId(id);
 			try {
 				const { data } = await getMenuById(id);
-				console.log(data);
 				setData(data);
 			} catch {
 				message.error("获取数据失败，请重试");
@@ -92,7 +91,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 		try {
 			setIsModalOpen(false);
 			if (menuId) {
-				// updateMenu(value);
+				updateMenu(value, menuId);
 				message.success("修改成功！");
 			} else {
 				createMenuById(value);

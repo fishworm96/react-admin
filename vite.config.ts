@@ -38,7 +38,8 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 				"/api": {
 					// target: "https://www.fastmock.site/mock/f81e8333c1a9276214bcdbc170d9e0a0", // fastmock
 					// target: "https://mock.mengxuegu.com/mock/629d727e6163854a32e8307e", // easymock
-					target: "http://192.168.1.233:8080",
+					// target: "http://192.168.1.233:8080",
+					target: "http://localhost:8080",
 					// target: "http://www.fishworm.top",
 					changeOrigin: true
 					// rewrite: path => path.replace(/^\/api/, "")

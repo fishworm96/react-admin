@@ -22,3 +22,7 @@ export const deleteMenuById = (id: number) => {
 export const createMenuById = (params: System.ReqUpdateMenu) => {
 	return http.post(`${PORT1}/menu`, params);
 };
+
+export const updateMenu = (params: System.ReqUpdateMenu, id: number) => {
+	return http.put(`${PORT1}/menu`, { ...params, id });
+};

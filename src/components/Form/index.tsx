@@ -42,7 +42,7 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 		let parent_id =
 			selectedOptions[selectedOptions.length - 1].value === 0
 				? selectedOptions[selectedOptions.length - 1].value
-				: selectedOptions[selectedOptions.length - 1].value.split("_")[1];
+				: +selectedOptions[selectedOptions.length - 1].value.split("_")[1];
 		let parent_name = selectedOptions[selectedOptions.length - 1].label;
 		form.setFieldsValue({ parent_id, parent_name });
 	};
