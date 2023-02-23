@@ -72,13 +72,8 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 				<Form.Item name="path" label="路由路径" rules={[{ required: true, message: "请输入路由路径" }]}>
 					<Input style={{ width: 250 }} />
 				</Form.Item>
-<<<<<<< HEAD
-				<Form.Item name="type" label="菜单等级" rules={[{ required: true, message: "请输入路由路径" }]}>
-					<Input style={{ width: 250 }} />
-=======
 				<Form.Item name="type" label="菜单等级" rules={[{ required: true, message: "请输入菜单等级" }]}>
 					<Input type="number" min={1} onChange={changeInputType} style={{ width: 250 }} />
->>>>>>> 42569252895f84ee9988cf6749e6d4aee6111be5
 				</Form.Item>
 				<Form.Item name="icon" label="图标">
 					<Select onChange={changeSelectHandler} style={{ width: 250 }}>
@@ -94,11 +89,7 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 						})}
 					</Select>
 				</Form.Item>
-<<<<<<< HEAD
-				<Form.Item name="parent_name" label="父节点名称">
-=======
 				<Form.Item name="parent_name" label="父节点名称" rules={[{ required: true, message: "请选择父节点名称" }]}>
->>>>>>> 42569252895f84ee9988cf6749e6d4aee6111be5
 					<Cascader
 						style={{ width: 250 }}
 						options={options}

@@ -38,6 +38,16 @@ export namespace Login {
 }
 
 export namespace System {
+	export interface ResMenuInfo {
+		id: number;
+		module_id: number;
+		parentId: number;
+		type: number;
+		icon: string;
+		path: string;
+		title: string;
+		parentName: string;
+	}
 	export interface ReqUpdateMenu {
 		title: string;
 		path: string;
