@@ -45,7 +45,12 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 	}));
 
 	const onChange = (value: any, selectedOptions: any) => {
-		console.log("onChange:", value, selectedOptions);
+		let parent_id =
+			selectedOptions[selectedOptions.length - 1].value === 0
+				? selectedOptions[selectedOptions.length - 1].value
+				: selectedOptions[selectedOptions.length - 1].value.split("_")[1];
+		let parent_name = selectedOptions[selectedOptions.length - 1].label;
+		form.setFieldsValue({ parent_id, parent_name });
 	};
 
 	const changeSelectHandler = (value: { value: string; label: React.ReactNode }) => {
@@ -67,6 +72,9 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 					<Input style={{ width: 250 }} />
 				</Form.Item>
 				<Form.Item name="path" label="路由路径" rules={[{ required: true, message: "请输入路由路径" }]}>
+					<Input style={{ width: 250 }} />
+				</Form.Item>
+				<Form.Item name="type" label="菜单等级" rules={[{ required: true, message: "请输入菜单等级" }]}>
 					<Input style={{ width: 250 }} />
 				</Form.Item>
 				<Form.Item name="icon" label="图标">

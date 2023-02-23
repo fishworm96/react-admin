@@ -5,6 +5,7 @@ declare namespace Menu {
 		title: string;
 		id: number;
 		module_id: number;
+		type: number;
 		icon: string;
 		isLink?: string;
 		close?: boolean;
