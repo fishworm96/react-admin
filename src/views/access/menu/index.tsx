@@ -36,12 +36,11 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const [data, setData] = useState<Data>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [menuId, setMenuId] = useState<number | null>();
-	const [menuData, setMenuData] = useState(menuList);
 	const [tableData, seTableData] = useState<TableColumns[]>([]);
 
 	useEffect(() => {
-		seTableData(changeTableData(menuData!));
-	}, [menuData, menuList]);
+		seTableData(changeTableData(menuList!));
+	}, [menuList]);
 
 	const changeTableData = (list: Menu.MenuOptions[]): TableColumns[] => {
 		return list.map((item, index) => {
@@ -97,19 +96,19 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 				createMenuById(value);
 				message.success("添加成功！");
 			}
-			const { data } = await getMenuList();
-			setMenuData(data);
+			await getMenuList();
 		} catch {
 			setIsModalOpen(false);
 		}
+		window.location.reload();
 	};
 
 	const onDelete = async ({ isOk, id }: callbackParams) => {
 		if (isOk) {
 			await deleteMenuById(id!);
-			const { data } = await getMenuList();
-			setMenuData(data);
+			await getMenuList();
 			message.success("删除成功！");
+			window.location.reload();
 		}
 	};
 
