@@ -9,5 +9,10 @@ import http from "@/api";
 
 // * 获取菜单列表
 export const getMenuById = (id: number) => {
-	return http.get<Menu.MenuOptions>(PORT1 + `/menu?id=${id}`);
+	return http.get<Menu.MenuOptions>(`${PORT1}/menu?id=${id}`);
+};
+
+// 根据id删除菜单
+export const deleteMenuById = (id: number) => {
+	return http.delete(`${PORT1}/menu/${id}`);
 };
