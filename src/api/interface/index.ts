@@ -36,3 +36,14 @@ export namespace Login {
 		[propName: string]: any;
 	}
 }
+
+export namespace System {
+	export interface ReqUpdateMenu {
+		title: string;
+		path: string;
+		type: number;
+		parentId: number;
+		id?: number;
+		icon?: string;
+	}
+}

@@ -1,6 +1,7 @@
 import { PORT1 } from "@/api/config/servicePort";
 
 import http from "@/api";
+import { System } from "../interface";
 
 /**
  * @name 登录模块
@@ -15,4 +16,9 @@ export const getMenuById = (id: number) => {
 // 根据id删除菜单
 export const deleteMenuById = (id: number) => {
 	return http.delete(`${PORT1}/menu/${id}`);
+};
+
+// 创建菜单
+export const createMenuById = (params: System.ReqUpdateMenu) => {
+	return http.post(`${PORT1}/menu`, params);
 };
