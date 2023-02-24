@@ -23,6 +23,18 @@ export interface ReqPage {
 	pageSize: number;
 }
 
+export interface Tag {
+	id: number;
+	name: string;
+}
+
+export interface Community {
+	id: number;
+	name: string;
+	introduction: string;
+	create_time: Date;
+}
+
 // * 登录
 export namespace Login {
 	export interface ReqLoginForm {
@@ -55,5 +67,18 @@ export namespace System {
 		module_id: number;
 		id?: number;
 		icon?: string;
+	}
+}
+
+export namespace Content {
+	export interface ResArticle {
+		id: number;
+		author_name: string;
+		vote_num: number;
+		author_id: number;
+		status: number;
+		title: string;
+		tag: Tag[];
+		community: Community;
 	}
 }

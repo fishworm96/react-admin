@@ -143,7 +143,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 		<BasicContent>
 			<>
 				<CreateBtn onCreate={onCreate} />
-				<BasicTable columns={tableColumns(optionRender)} dataSource={tableData} />
+				<BasicTable<TableColumns> columns={tableColumns(optionRender)} dataSource={tableData} />
 				<BasicModal width={1000} title={modalTitle} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
 					<BasicForm
 						formRef={createFormRef}

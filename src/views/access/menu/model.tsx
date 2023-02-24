@@ -4,7 +4,6 @@ export interface TableColumns {
 	title: string;
 	type: number;
 	module_id: number;
-	type: number;
 	path: string;
 	icon: string;
 	children?: TableColumns[];
