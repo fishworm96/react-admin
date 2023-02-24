@@ -52,7 +52,7 @@ export namespace System {
 		title: string;
 		path: string;
 		type: number;
-		parentId: number;
+		module_id: number;
 		id?: number;
 		icon?: string;
 	}

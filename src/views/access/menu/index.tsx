@@ -8,6 +8,7 @@ import BasicForm, { IFormFn } from "@/components/Form";
 import BasicModal from "@/components/Modal";
 import BasicTable from "@/components/Table";
 import { MenuState } from "@/redux/interface";
+import { ADD_TITLE, EDIT_TITLE } from "@/utils/config";
 import { message, Space } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
@@ -36,6 +37,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const [data, setData] = useState<Data>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [menuId, setMenuId] = useState<number | null>();
+	const [modalTitle, setModalTitle] = useState<string>();
 	const [tableData, seTableData] = useState<TableColumns[]>([]);
 
 	useEffect(() => {
@@ -63,12 +65,14 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	};
 
 	const onCreate = () => {
+		setModalTitle(ADD_TITLE);
 		createFormRef.current?.handleReset();
 		setIsModalOpen(true);
 		setMenuId(null);
 	};
 
 	const onUpdate = async (id: number) => {
+		setModalTitle(EDIT_TITLE);
 		setIsModalOpen(true);
 		if (id) {
 			setMenuId(id);
@@ -140,7 +144,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 			<>
 				<CreateBtn onCreate={onCreate} />
 				<BasicTable columns={tableColumns(optionRender)} dataSource={tableData} />
-				<BasicModal width={1000} title={"编辑"} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
+				<BasicModal width={1000} title={modalTitle} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
 					<BasicForm
 						formRef={createFormRef}
 						options={cascadedOptions(menuList!)}

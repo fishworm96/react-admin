@@ -23,6 +23,7 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 	const { css_prefix_text, glyphs } = icons;
 
 	useEffect(() => {
+		console.log(data);
 		form.setFieldsValue(data);
 	}, [form, data]);
 
@@ -39,12 +40,12 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 	}));
 
 	const onChange = (value: any, selectedOptions: any) => {
-		let parent_id =
+		let module_id =
 			selectedOptions[selectedOptions.length - 1].value === 0
 				? selectedOptions[selectedOptions.length - 1].value
 				: +selectedOptions[selectedOptions.length - 1].value.split("_")[1];
 		let parent_name = selectedOptions[selectedOptions.length - 1].label;
-		form.setFieldsValue({ parent_id, parent_name });
+		form.setFieldsValue({ module_id, parent_name });
 	};
 
 	const changeInputType = (e: ChangeEvent<HTMLInputElement>) => {
@@ -100,7 +101,7 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 						changeOnSelect
 					/>
 				</Form.Item>
-				<Form.Item name="parent_id">
+				<Form.Item name="module_id">
 					<div></div>
 				</Form.Item>
 			</Space>
