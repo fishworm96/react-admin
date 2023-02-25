@@ -16,8 +16,12 @@ const Article = () => {
 
 	const formatData = (item: Content.ResArticle[]): PostColumns[] => {
 		return item.map(item => {
-			const { title, author_name, tag, community } = item;
-			const Data: PostColumns = { title, author_name, tag, introduction: community.introduction };
+			let tags: string[] = [];
+			const { id, title, author_name, tag, community } = item;
+			if (tag && tag.length > 0) {
+				tags = tag.map(item => `[${item.name}] `);
+			}
+			const Data: PostColumns = { title, author_name, tag: tags, key: id.toString(), introduction: community.introduction };
 			return Data;
 		});
 	};
@@ -27,7 +31,7 @@ const Article = () => {
 		setPostList(formatData(data as Content.ResArticle[]));
 	};
 
-	const onUpdate = (id: number) => {
+	const onUpdate = (id: string) => {
 		console.log(id);
 	};
 
@@ -38,7 +42,7 @@ const Article = () => {
 	const optionRender: ITableOptions<object> = (_, record) => {
 		return (
 			<Space wrap>
-				<UpdateBtn onClick={() => onUpdate((record as Menu.MenuOptions).id)} />
+				<UpdateBtn onClick={() => onUpdate((record as PostColumns).key)} />
 				<DeleteBtn id={(record as Menu.MenuOptions).id} handleDelete={onDelete} />
 			</Space>
 		);

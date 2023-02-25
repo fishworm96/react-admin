@@ -1,10 +1,9 @@
-import { Tag } from "@/api/interface";
-
 export interface PostColumns {
 	id?: number;
 	title: string;
+	key: string;
 	author_name: string;
-	tag: Tag[];
+	tag: string[];
 	introduction: string;
 }
 
