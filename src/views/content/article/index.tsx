@@ -1,13 +1,15 @@
 import { Content } from "@/api/interface";
 import { getPostList } from "@/api/modules/content";
-import { DeleteBtn, UpdateBtn } from "@/components/Button";
+import { CreateBtn, DeleteBtn, UpdateBtn } from "@/components/Button";
 import BasicContent from "@/components/Content";
 import BasicTable from "@/components/Table";
 import { Space } from "antd";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { postColumns, PostColumns } from "./model";
 
 const Article = () => {
+	const navigate = useNavigate();
 	const [postList, setPostList] = useState<PostColumns[]>([]);
 
 	useEffect(() => {
@@ -31,6 +33,10 @@ const Article = () => {
 		setPostList(formatData(data as Content.ResArticle[]));
 	};
 
+	const onCreate = () => {
+		navigate("/content/article/option");
+	};
+
 	const onUpdate = (id: string) => {
 		console.log(id);
 	};
@@ -51,7 +57,7 @@ const Article = () => {
 	return (
 		<BasicContent>
 			<>
-				{/* <CreateBtn /> */}
+				<CreateBtn onCreate={onCreate} />
 				{postList.length > 0 && <BasicTable<PostColumns> columns={postColumns(optionRender)} dataSource={postList} />}
 			</>
 		</BasicContent>

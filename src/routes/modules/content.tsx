@@ -1,6 +1,7 @@
 import { RouteObject } from "@/routes/interface";
-import Article from "@/views/content/article";
 import LayoutIndex from "@/views/layout";
+import Option from "@/views/content/article/option";
+import Article from "@/views/content/article";
 
 const contentRouter: Array<RouteObject> = [
 	{
@@ -14,6 +15,10 @@ const contentRouter: Array<RouteObject> = [
 					title: "登录页",
 					key: "login"
 				}
+			},
+			{
+				path: "/content/article/option",
+				element: <Option />
 			}
 		]
 	}
