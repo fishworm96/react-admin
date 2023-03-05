@@ -81,4 +81,8 @@ export namespace Content {
 		tag: Tag[];
 		community: Community;
 	}
+	export interface ResTag {
+		id: number;
+		name: string;
+	}
 }

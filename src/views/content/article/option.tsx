@@ -1,9 +1,33 @@
+import { resGetTagList as reqGetTagList } from "@/api/modules/content";
 import { Form, Input, Select } from "antd";
+import { useEffect, useState } from "react";
 import MarkDownEdit from "./MarkdownEdit";
-import type { SelectProps } from "antd";
+
+interface Tag {
+	label: string;
+	value: number;
+}
 
 const Option = () => {
 	// const navigate = useNavigate();
+	const [tagList, setTagList] = useState<Tag[]>();
+
+	useEffect(() => {
+		getTagList();
+	}, []);
+
+	// 获取标签列表
+	const getTagList = async () => {
+		let tagList: Tag[] = [];
+		const { data } = await reqGetTagList();
+		if (data) {
+			data.forEach(item => {
+				const { id, name } = item;
+				tagList.push({ label: name, value: id });
+			});
+		}
+		setTagList(tagList!);
+	};
 
 	// const onSubmit = () => {
 	// 	navigate("/content/article");
@@ -16,8 +40,6 @@ const Option = () => {
 	// const handleEditorChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 	// 	setEdit(e.target.value);
 	// };
-
-	const options: SelectProps["options"] = [{ label: 1, value: 1 }];
 
 	const handleChange = (value: string[]) => {
 		console.log(`selected ${value}`);
@@ -40,7 +62,7 @@ const Option = () => {
 						placeholder="请选择标签"
 						// defaultValue={["a10", "c12"]}
 						onChange={handleChange}
-						options={options}
+						options={tagList}
 					/>
 				</Form.Item>
 				<MarkDownEdit content={"# 1"} />

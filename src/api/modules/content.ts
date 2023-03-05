@@ -12,3 +12,7 @@ import { Content } from "../interface";
 export const getPostList = () => {
 	return http.get<Content.ResArticle[]>(`${PORT1}/post`);
 };
+
+export const resGetTagList = () => {
+	return http.get<Content.ResTag[]>(`${PORT1}/tag`);
+};
