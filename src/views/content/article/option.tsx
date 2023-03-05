@@ -1,41 +1,56 @@
-import { resGetTagList as reqGetTagList } from "@/api/modules/content";
-import { Form, Input, Select } from "antd";
+import { Content } from "@/api/interface";
+import { resGetCategoryList, resGetTagList as reqGetTagList } from "@/api/modules/content";
+import { Button, Form, Input, message, Select, Space } from "antd";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import MarkDownEdit from "./MarkdownEdit";
 
-interface Tag {
+interface Data {
 	label: string;
 	value: number;
 }
 
 const Option = () => {
-	// const navigate = useNavigate();
-	const [tagList, setTagList] = useState<Tag[]>();
+	const navigate = useNavigate();
+	const [tagList, setTagList] = useState<Data[]>();
+	const [categoryList, setCategoryList] = useState<Data[]>();
 
 	useEffect(() => {
 		getTagList();
 	}, []);
 
+	const formData = (data: Content.ResTag[]) => {
+		let list: Data[] = [];
+		data.forEach(item => {
+			const { id, name } = item;
+			list.push({ label: name, value: id });
+		});
+		return list;
+	};
+
 	// 获取标签列表
 	const getTagList = async () => {
-		let tagList: Tag[] = [];
-		const { data } = await reqGetTagList();
-		if (data) {
-			data.forEach(item => {
-				const { id, name } = item;
-				tagList.push({ label: name, value: id });
-			});
+		try {
+			const [tagListRes, categoryListRes] = await Promise.all([reqGetTagList(), resGetCategoryList()]);
+			const tagListData = formData(tagListRes.data!);
+			const categoryListData = formData(categoryListRes.data!);
+			setTagList(tagListData);
+			setCategoryList(categoryListData);
+		} catch (error) {
+			// 处理错误信息
+			console.log(error);
+			// 显示错误信息给用户
+			message.error("获取标签和分类列表失败，请稍后重试");
 		}
-		setTagList(tagList!);
 	};
 
 	// const onSubmit = () => {
 	// 	navigate("/content/article");
 	// };
 
-	// const onCancel = () => {
-	// 	navigate(-1);
-	// };
+	const onBack = () => {
+		navigate(-1);
+	};
 
 	// const handleEditorChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 	// 	setEdit(e.target.value);
@@ -45,27 +60,47 @@ const Option = () => {
 		console.log(`selected ${value}`);
 	};
 
+	const onFinish = (values: any) => {
+		console.log("Success:", values);
+	};
+
+	const tailLayout = {
+		wrapperCol: { offset: 21 }
+	};
+
 	return (
 		<>
-			<Form style={{ marginRight: 50 }}>
-				<Form.Item label="标题" name="title" rules={[{ required: true, message: "Please input your username!" }]}>
+			<Form style={{ marginRight: 50 }} onFinish={onFinish}>
+				<Form.Item label="标题" name="title" rules={[{ required: true, message: "请输入标题!" }]}>
 					<Input />
 				</Form.Item>
-				<Form.Item label="简述" name="describe" rules={[{ required: true, message: "Please input your username!" }]}>
+				<Form.Item label="简述" name="describe" rules={[{ required: true, message: "请输入简述!" }]}>
 					<Input />
 				</Form.Item>
-				<Form.Item label="标签" name="tag" rules={[{ required: true, message: "请选择标签" }]}>
+				<Form.Item label="分类" name="category" rules={[{ required: true, message: "选择分类!" }]}>
+					<Select style={{ width: 120 }} onChange={handleChange} options={categoryList} />
+				</Form.Item>
+				<Form.Item label="标签" name="tag" rules={[{ required: true, message: "请选择标签!" }]}>
 					<Select
 						mode="multiple"
 						allowClear
 						style={{ width: "100%" }}
 						placeholder="请选择标签"
-						// defaultValue={["a10", "c12"]}
 						onChange={handleChange}
 						options={tagList}
 					/>
 				</Form.Item>
 				<MarkDownEdit content={"# 1"} />
+				<Form.Item {...tailLayout}>
+					<Space>
+						<Button type="primary" htmlType="submit">
+							提交
+						</Button>
+						<Button htmlType="button" onClick={onBack}>
+							返回
+						</Button>
+					</Space>
+				</Form.Item>
 			</Form>
 		</>
 	);

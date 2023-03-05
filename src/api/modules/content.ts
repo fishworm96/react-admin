@@ -16,3 +16,7 @@ export const getPostList = () => {
 export const resGetTagList = () => {
 	return http.get<Content.ResTag[]>(`${PORT1}/tag`);
 };
+
+export const resGetCategoryList = () => {
+	return http.get<Content.ResTag[]>(`${PORT1}/community`);
+};

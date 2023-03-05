@@ -46,7 +46,6 @@ const MarkDownEdit = ({ content }: { content: string }) => {
 	};
 
 	const onUploadImg = async (files: Array<File>, callback: (urls: Array<string>) => void) => {
-		console.log(files, callback);
 		const res = await Promise.all(
 			files.map(file => {
 				return new Promise((rev, rej) => {
@@ -68,7 +67,7 @@ const MarkDownEdit = ({ content }: { content: string }) => {
 		callback(res.map(item => item.data.url));
 	};
 
-	return <MdEditor ref={editorRef} style={{ height: 700 }} modelValue={text} onChange={setText} onUploadImg={onUploadImg} />;
+	return <MdEditor ref={editorRef} style={{ height: 650 }} modelValue={text} onChange={setText} onUploadImg={onUploadImg} />;
 };
 
 export default MarkDownEdit;
