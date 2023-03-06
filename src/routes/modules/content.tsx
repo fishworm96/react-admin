@@ -1,7 +1,7 @@
 import { RouteObject } from "@/routes/interface";
 import LayoutIndex from "@/views/layout";
-import Option from "@/views/content/article/option";
 import Article from "@/views/content/article";
+import Option from "@/views/content/article/component/option";
 
 const contentRouter: Array<RouteObject> = [
 	{

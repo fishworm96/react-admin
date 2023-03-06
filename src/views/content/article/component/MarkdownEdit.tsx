@@ -5,15 +5,19 @@ import "md-editor-rt/lib/style.css";
 import "./markdown.less";
 import axios from "axios";
 
-const MarkDownEdit = ({ content }: { content: string }) => {
+const MarkDownEdit = ({ content, markdownText }: { content: string; markdownText: (text: string) => void }) => {
 	const [text, setText] = useState("");
 	const editorRef = useRef<ExposeParam>();
 
 	useEffect(() => {
-		editorRef.current?.on("catalog", console.log);
+		// editorRef.current?.on("catalog", console.log);
 		upLoadImage();
 		setText(content);
 	}, []);
+
+	useEffect(() => {
+		markdownText(text);
+	}, [text]);
 
 	// 剪贴板上传图片
 	const upLoadImage = () => {
@@ -67,7 +71,11 @@ const MarkDownEdit = ({ content }: { content: string }) => {
 		callback(res.map((item: any) => item.data.url));
 	};
 
-	return <MdEditor ref={editorRef} style={{ height: 650 }} modelValue={text} onChange={setText} onUploadImg={onUploadImg} />;
+	return (
+		<>
+			<MdEditor ref={editorRef} style={{ height: 650 }} modelValue={text} onChange={setText} onUploadImg={onUploadImg} />
+		</>
+	);
 };
 
 export default MarkDownEdit;

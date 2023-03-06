@@ -13,6 +13,7 @@ interface Data {
 const Option = () => {
 	const navigate = useNavigate();
 	const [tagList, setTagList] = useState<Data[]>();
+	const [text, setText] = useState<string>();
 	const [categoryList, setCategoryList] = useState<Data[]>();
 
 	useEffect(() => {
@@ -44,24 +45,17 @@ const Option = () => {
 		}
 	};
 
-	// const onSubmit = () => {
-	// 	navigate("/content/article");
-	// };
-
 	const onBack = () => {
 		navigate(-1);
 	};
-
-	// const handleEditorChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-	// 	setEdit(e.target.value);
-	// };
 
 	const handleChange = (value: string[]) => {
 		console.log(`selected ${value}`);
 	};
 
 	const onFinish = (values: any) => {
-		console.log("Success:", values);
+		console.log("Success:", { ...values, content: text });
+		// navigate("/content/article");
 	};
 
 	const tailLayout = {
@@ -90,7 +84,10 @@ const Option = () => {
 						options={tagList}
 					/>
 				</Form.Item>
-				<MarkDownEdit content={"# 1"} />
+				<MarkDownEdit
+					content={"# 1\n![狗](https://markdown.com.cn/assets/img/philly-magic-garden.9c0b4415.jpg)"}
+					markdownText={setText}
+				/>
 				<Form.Item {...tailLayout}>
 					<Space>
 						<Button type="primary" htmlType="submit">
