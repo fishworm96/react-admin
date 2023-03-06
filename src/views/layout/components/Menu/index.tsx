@@ -80,6 +80,8 @@ const LayoutMenu = (props: any) => {
 			const dynamicRouter = handleRouter(data);
 			setAuthRouter(dynamicRouter);
 			setMenuListAction(data);
+		} catch (err) {
+			return;
 		} finally {
 			setLoading(false);
 		}

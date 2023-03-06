@@ -64,7 +64,7 @@ const MarkDownEdit = ({ content }: { content: string }) => {
 			})
 		);
 
-		callback(res.map(item => item.data.url));
+		callback(res.map((item: any) => item.data.url));
 	};
 
 	return <MdEditor ref={editorRef} style={{ height: 650 }} modelValue={text} onChange={setText} onUploadImg={onUploadImg} />;

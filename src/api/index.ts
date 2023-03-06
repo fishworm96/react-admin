@@ -76,6 +76,7 @@ class RequestHttp {
 				const { response } = error;
 				NProgress.done();
 				tryHideFullScreenLoading();
+				if (error.message === "canceled") return;
 				// 请求超时单独判断，请求超时没有 response
 				if (error.message.indexOf("timeout") !== -1) message.error("请求超时，请稍后再试");
 				// 根据响应的错误状态码，做不同的处理
