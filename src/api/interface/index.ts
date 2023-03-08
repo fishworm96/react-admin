@@ -78,11 +78,19 @@ export namespace Content {
 		author_id: number;
 		status: number;
 		title: string;
-		tag: Tag[];
+		tag: string[];
 		community: Community;
+		description: string;
 	}
 	export interface ResTag {
 		id: number;
 		name: string;
+	}
+	export interface ReqArticle {
+		title: string;
+		content: string;
+		description: string;
+		community_id: number;
+		tag: number[];
 	}
 }

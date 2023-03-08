@@ -20,3 +20,7 @@ export const resGetTagList = () => {
 export const resGetCategoryList = () => {
 	return http.get<Content.ResTag[]>(`${PORT1}/community`);
 };
+
+export const reqCreateArticle = (params: Content.ReqArticle) => {
+	return http.post(`${PORT1}/post`, params);
+};

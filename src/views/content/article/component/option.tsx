@@ -1,6 +1,6 @@
 import { Content } from "@/api/interface";
-import { resGetCategoryList, resGetTagList as reqGetTagList } from "@/api/modules/content";
-import { Button, Form, Input, message, Select, Space } from "antd";
+import { reqCreateArticle, resGetCategoryList, resGetTagList as reqGetTagList } from "@/api/modules/content";
+import { Button, Form, Input, Select, Space } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MarkDownEdit from "./MarkdownEdit";
@@ -39,9 +39,10 @@ const Option = () => {
 			setCategoryList(categoryListData);
 		} catch (error) {
 			// 处理错误信息
+			return;
 			console.log(error);
 			// 显示错误信息给用户
-			message.error("获取标签和分类列表失败，请稍后重试");
+			// message.error("获取标签和分类列表失败，请稍后重试");
 		}
 	};
 
@@ -53,9 +54,9 @@ const Option = () => {
 		console.log(`selected ${value}`);
 	};
 
-	const onFinish = (values: any) => {
-		console.log("Success:", { ...values, content: text });
-		// navigate("/content/article");
+	const onFinish = async (values: any) => {
+		await reqCreateArticle({ ...values, content: text });
+		navigate("-1");
 	};
 
 	const tailLayout = {
@@ -68,10 +69,10 @@ const Option = () => {
 				<Form.Item label="标题" name="title" rules={[{ required: true, message: "请输入标题!" }]}>
 					<Input />
 				</Form.Item>
-				<Form.Item label="简述" name="describe" rules={[{ required: true, message: "请输入简述!" }]}>
+				<Form.Item label="简述" name="description" rules={[{ required: true, message: "请输入简述!" }]}>
 					<Input />
 				</Form.Item>
-				<Form.Item label="分类" name="category" rules={[{ required: true, message: "选择分类!" }]}>
+				<Form.Item label="分类" name="community_id" rules={[{ required: true, message: "选择分类!" }]}>
 					<Select style={{ width: 120 }} onChange={handleChange} options={categoryList} />
 				</Form.Item>
 				<Form.Item label="标签" name="tag" rules={[{ required: true, message: "请选择标签!" }]}>
@@ -84,10 +85,7 @@ const Option = () => {
 						options={tagList}
 					/>
 				</Form.Item>
-				<MarkDownEdit
-					content={"# 1\n![狗](https://markdown.com.cn/assets/img/philly-magic-garden.9c0b4415.jpg)"}
-					markdownText={setText}
-				/>
+				<MarkDownEdit content={""} markdownText={setText} />
 				<Form.Item {...tailLayout}>
 					<Space>
 						<Button type="primary" htmlType="submit">

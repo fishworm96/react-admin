@@ -4,7 +4,7 @@ export interface PostColumns {
 	key: string;
 	author_name: string;
 	tag: string[];
-	introduction: string;
+	category: string;
 }
 
 export const postColumns = (optionRender: ITableOptions<PostColumns>) => {
@@ -22,8 +22,8 @@ export const postColumns = (optionRender: ITableOptions<PostColumns>) => {
 			dataIndex: "tag"
 		},
 		{
-			title: "简述",
-			dataIndex: "introduction"
+			title: "分类",
+			dataIndex: "category"
 		},
 		{
 			title: "操作",

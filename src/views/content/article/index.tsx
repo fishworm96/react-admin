@@ -21,16 +21,20 @@ const Article = () => {
 			let tags: string[] = [];
 			const { id, title, author_name, tag, community } = item;
 			if (tag && tag.length > 0) {
-				tags = tag.map(item => `[${item.name}] `);
+				tags = tag.map(item => `[${item}] `);
 			}
-			const Data: PostColumns = { title, author_name, tag: tags, key: id.toString(), introduction: community.introduction };
+			const Data: PostColumns = { title, author_name, tag: tags, key: id.toString(), category: community.name };
 			return Data;
 		});
 	};
 
 	const getPost = async () => {
-		const { data } = await getPostList();
-		setPostList(formatData(data as Content.ResArticle[]));
+		try {
+			const { data } = await getPostList();
+			data && setPostList(formatData(data));
+		} catch (err) {
+			return;
+		}
 	};
 
 	const onCreate = () => {
@@ -38,7 +42,7 @@ const Article = () => {
 	};
 
 	const onUpdate = (id: string) => {
-		console.log(id);
+		navigate(`/content/article/option?id=${id}`);
 	};
 
 	const onDelete = () => {
