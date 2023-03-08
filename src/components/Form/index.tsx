@@ -23,7 +23,6 @@ const BasicForm = ({ data, options, formRef, handleFinish }: Props) => {
 	const { css_prefix_text, glyphs } = icons;
 
 	useEffect(() => {
-		console.log(data);
 		form.setFieldsValue(data);
 	}, [form, data]);
 

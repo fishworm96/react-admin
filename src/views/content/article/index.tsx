@@ -31,6 +31,7 @@ const Article = () => {
 	const getPost = async () => {
 		try {
 			const { data } = await getPostList();
+			console.log(data);
 			data && setPostList(formatData(data));
 		} catch (err) {
 			return;
@@ -41,7 +42,7 @@ const Article = () => {
 		navigate("/content/article/option");
 	};
 
-	const onUpdate = (id: string) => {
+	const onUpdate = async (id: string) => {
 		navigate(`/content/article/option?id=${id}`);
 	};
 

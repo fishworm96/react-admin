@@ -82,6 +82,21 @@ export namespace Content {
 		community: Community;
 		description: string;
 	}
+	export interface ResPostDetail {
+		id: number;
+		vote_num: number;
+		author_id: number;
+		community_id: number;
+		status: number;
+		author_name: string;
+		description: string;
+		title: string;
+		content: string;
+		create_time: Date;
+		update_time: Date;
+		community: Community;
+		tag: Tag[];
+	}
 	export interface ResTag {
 		id: number;
 		name: string;

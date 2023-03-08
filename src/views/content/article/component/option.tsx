@@ -1,8 +1,13 @@
 import { Content } from "@/api/interface";
-import { reqCreateArticle, resGetCategoryList, resGetTagList as reqGetTagList } from "@/api/modules/content";
+import {
+	reqCreateArticle,
+	resGetCategoryList,
+	resGetPostDetailByPostId,
+	resGetTagList as reqGetTagList
+} from "@/api/modules/content";
 import { Button, Form, Input, Select, Space } from "antd";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MarkDownEdit from "./MarkdownEdit";
 
 interface Data {
@@ -12,9 +17,13 @@ interface Data {
 
 const Option = () => {
 	const navigate = useNavigate();
+	const { search } = useLocation();
+	const id = search.split("=")[1];
+	const [form] = Form.useForm();
 	const [tagList, setTagList] = useState<Data[]>();
 	const [text, setText] = useState<string>();
 	const [categoryList, setCategoryList] = useState<Data[]>();
+	const [postDetail, setPostDetail] = useState<Content.ResPostDetail>();
 
 	useEffect(() => {
 		getTagList();
@@ -32,11 +41,15 @@ const Option = () => {
 	// 获取标签列表
 	const getTagList = async () => {
 		try {
-			const [tagListRes, categoryListRes] = await Promise.all([reqGetTagList(), resGetCategoryList()]);
-			const tagListData = formData(tagListRes.data!);
-			const categoryListData = formData(categoryListRes.data!);
-			setTagList(tagListData);
-			setCategoryList(categoryListData);
+			const [tagListRes, categoryListRes, post] = await Promise.all([
+				reqGetTagList(),
+				resGetCategoryList(),
+				resGetPostDetailByPostId(+id)
+			]);
+			setTagList(formData(tagListRes.data!));
+			setCategoryList(formData(categoryListRes.data!));
+			setPostDetail(post.data);
+			console.log(postDetail);
 		} catch (error) {
 			// 处理错误信息
 			return;
@@ -65,7 +78,7 @@ const Option = () => {
 
 	return (
 		<>
-			<Form style={{ marginRight: 50 }} onFinish={onFinish}>
+			<Form form={form} style={{ marginRight: 50 }} onFinish={onFinish}>
 				<Form.Item label="标题" name="title" rules={[{ required: true, message: "请输入标题!" }]}>
 					<Input />
 				</Form.Item>
