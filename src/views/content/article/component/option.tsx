@@ -1,6 +1,7 @@
 import { Content } from "@/api/interface";
 import {
 	reqCreateArticle,
+	reqEditPost,
 	resGetCategoryList,
 	resGetPostDetailByPostId,
 	resGetTagList as reqGetTagList
@@ -23,7 +24,7 @@ const Option = () => {
 	const [tagList, setTagList] = useState<Data[]>();
 	const [text, setText] = useState<string>();
 	const [categoryList, setCategoryList] = useState<Data[]>();
-	const [postDetail, setPostDetail] = useState<Content.ResPostDetail>();
+	const [content, setContent] = useState<string>("");
 
 	useEffect(() => {
 		getTagList();
@@ -44,12 +45,12 @@ const Option = () => {
 			const [tagListRes, categoryListRes, post] = await Promise.all([
 				reqGetTagList(),
 				resGetCategoryList(),
-				resGetPostDetailByPostId(+id)
+				resGetPostDetailByPostId(id)
 			]);
 			setTagList(formData(tagListRes.data!));
 			setCategoryList(formData(categoryListRes.data!));
-			setPostDetail(post.data);
-			console.log(postDetail);
+			setContent(post.data!.content);
+			form.setFieldsValue({ ...post.data, tag: formData(post.data!.tag) });
 		} catch (error) {
 			// 处理错误信息
 			return;
@@ -63,13 +64,18 @@ const Option = () => {
 		navigate(-1);
 	};
 
-	const handleChange = (value: string[]) => {
-		console.log(`selected ${value}`);
-	};
-
 	const onFinish = async (values: any) => {
-		await reqCreateArticle({ ...values, content: text });
-		navigate("-1");
+		console.log(values);
+		if (id) {
+			const tagValues =
+				Array.isArray(values.tag) && typeof values.tag[0] !== "number"
+					? values.tag.map((option: { value: number; label: string }) => option.value)
+					: [...values.tag];
+			await reqEditPost({ ...values, tag: tagValues, post_id: id, content: text });
+		} else {
+			await reqCreateArticle({ ...values, content: text });
+		}
+		navigate(-1);
 	};
 
 	const tailLayout = {
@@ -86,19 +92,12 @@ const Option = () => {
 					<Input />
 				</Form.Item>
 				<Form.Item label="分类" name="community_id" rules={[{ required: true, message: "选择分类!" }]}>
-					<Select style={{ width: 120 }} onChange={handleChange} options={categoryList} />
+					<Select style={{ width: 120 }} options={categoryList} />
 				</Form.Item>
 				<Form.Item label="标签" name="tag" rules={[{ required: true, message: "请选择标签!" }]}>
-					<Select
-						mode="multiple"
-						allowClear
-						style={{ width: "100%" }}
-						placeholder="请选择标签"
-						onChange={handleChange}
-						options={tagList}
-					/>
+					<Select mode="multiple" allowClear style={{ width: "100%" }} placeholder="请选择标签" options={tagList} />
 				</Form.Item>
-				<MarkDownEdit content={""} markdownText={setText} />
+				<MarkDownEdit content={content} markdownText={setText} />
 				<Form.Item {...tailLayout}>
 					<Space>
 						<Button type="primary" htmlType="submit">

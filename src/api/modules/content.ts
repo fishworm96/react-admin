@@ -28,6 +28,12 @@ export const reqCreateArticle = (params: Content.ReqArticle) => {
 	return http.post(`${PORT1}/post`, params);
 };
 
-export const resGetPostDetailByPostId = (id: number) => {
+// 获取文章信息
+export const resGetPostDetailByPostId = (id: string) => {
 	return http.get<Content.ResPostDetail>(`${PORT1}/post/${id}`);
+};
+
+// 修改文章
+export const reqEditPost = (params: Content.ReqEditArticle) => {
+	return http.put(`${PORT1}/post/edit`, params);
 };

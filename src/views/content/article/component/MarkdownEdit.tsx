@@ -6,14 +6,14 @@ import "./markdown.less";
 import axios from "axios";
 
 const MarkDownEdit = ({ content, markdownText }: { content: string; markdownText: (text: string) => void }) => {
-	const [text, setText] = useState("");
+	const [text, setText] = useState<string>("");
 	const editorRef = useRef<ExposeParam>();
 
 	useEffect(() => {
 		// editorRef.current?.on("catalog", console.log);
 		upLoadImage();
 		setText(content);
-	}, []);
+	}, [content]);
 
 	useEffect(() => {
 		markdownText(text);

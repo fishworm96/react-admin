@@ -72,7 +72,7 @@ export namespace System {
 
 export namespace Content {
 	export interface ResArticle {
-		id: number;
+		id: string;
 		author_name: string;
 		vote_num: number;
 		author_id: number;
@@ -83,7 +83,7 @@ export namespace Content {
 		description: string;
 	}
 	export interface ResPostDetail {
-		id: number;
+		id: string;
 		vote_num: number;
 		author_id: number;
 		community_id: number;
@@ -107,5 +107,8 @@ export namespace Content {
 		description: string;
 		community_id: number;
 		tag: number[];
+	}
+	export interface ReqEditArticle extends ReqArticle {
+		post_id: string;
 	}
 }
