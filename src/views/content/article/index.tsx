@@ -18,12 +18,8 @@ const Article = () => {
 
 	const formatData = (item: Content.ResArticle[]): PostColumns[] => {
 		return item.map(item => {
-			let tags: string[] = [];
 			const { id, title, author_name, tag, community } = item;
-			if (tag && tag.length > 0) {
-				tags = tag.map(item => `[${item}] `);
-			}
-			const Data: PostColumns = { title, author_name, tag: tags, key: id.toString(), category: community.name };
+			const Data: PostColumns = { title, author_name, tag, key: id, category: community.name };
 			return Data;
 		});
 	};
@@ -31,7 +27,6 @@ const Article = () => {
 	const getPost = async () => {
 		try {
 			const { data } = await getPostList();
-			console.log(data);
 			data && setPostList(formatData(data));
 		} catch (err) {
 			return;

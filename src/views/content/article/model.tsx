@@ -1,3 +1,5 @@
+import { Tag } from "antd";
+
 export interface PostColumns {
 	id?: number;
 	title: string;
@@ -19,7 +21,22 @@ export const postColumns = (optionRender: ITableOptions<PostColumns>) => {
 		},
 		{
 			title: "标签",
-			dataIndex: "tag"
+			dataIndex: "tag",
+			render: (_: any, { tag }: any) => (
+				<>
+					{tag.map((item: string) => {
+						let color = item.length > 5 ? "blue" : "green";
+						if (item === "loser") {
+							color = "volcano";
+						}
+						return (
+							<Tag color={color} key={item}>
+								{item.toUpperCase()}
+							</Tag>
+						);
+					})}
+				</>
+			)
 		},
 		{
 			title: "分类",
