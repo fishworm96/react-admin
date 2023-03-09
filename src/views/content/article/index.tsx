@@ -42,9 +42,9 @@ const Article = () => {
 		navigate(`/content/article/option?id=${id}`);
 	};
 
-	const onDelete = async ({ isOk, id }: callbackParams) => {
+	const onDelete = async ({ isOk, id }: callbackParams<string>) => {
 		if (isOk) {
-			id && (await reqDeletePost(id as string));
+			id && (await reqDeletePost(id));
 			getPost();
 		}
 	};

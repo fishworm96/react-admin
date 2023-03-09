@@ -10,7 +10,6 @@ const MarkDownEdit = ({ content, markdownText }: { content: string; markdownText
 	const editorRef = useRef<ExposeParam>();
 
 	useEffect(() => {
-		// editorRef.current?.on("catalog", console.log);
 		upLoadImage();
 		setText(content);
 	}, [content]);

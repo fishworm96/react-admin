@@ -42,15 +42,14 @@ const Option = () => {
 	// 获取标签列表
 	const getTagList = async () => {
 		try {
-			const [tagListRes, categoryListRes, post] = await Promise.all([
-				reqGetTagList(),
-				resGetCategoryList(),
-				resGetPostDetailByPostId(id)
-			]);
+			const [tagListRes, categoryListRes] = await Promise.all([reqGetTagList(), resGetCategoryList()]);
 			setTagList(formData(tagListRes.data!));
 			setCategoryList(formData(categoryListRes.data!));
-			setContent(post.data!.content);
-			form.setFieldsValue({ ...post.data, tag: formData(post.data!.tag) });
+			if (id) {
+				const { data } = await resGetPostDetailByPostId(id);
+				data && setContent(data?.content);
+				data && form.setFieldsValue({ ...data, tag: formData(data.tag) });
+			}
 		} catch (error) {
 			// 处理错误信息
 			return;

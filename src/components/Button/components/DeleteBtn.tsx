@@ -1,17 +1,17 @@
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
 
-export interface callbackParams {
+export interface callbackParams<T> {
 	isOk: boolean;
-	id?: number | string;
+	id?: T;
 }
 
-interface Props {
-	id?: number | string;
-	handleDelete: (params: callbackParams) => void;
+interface Props<T> {
+	id?: T;
+	handleDelete: (params: callbackParams<T>) => void;
 }
 
-const DeleteBtn = (props: Props) => {
+const DeleteBtn = <T extends number | string>(props: Props<T>) => {
 	const { id, handleDelete } = props;
 	const { confirm } = Modal;
 
