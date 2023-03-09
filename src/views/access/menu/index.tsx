@@ -109,7 +109,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 
 	const onDelete = async ({ isOk, id }: callbackParams) => {
 		if (isOk) {
-			await deleteMenuById(id!);
+			id && (await deleteMenuById(id));
 			await getMenuList();
 			message.success("删除成功！");
 			window.location.reload();

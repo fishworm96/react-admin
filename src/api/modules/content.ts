@@ -37,3 +37,7 @@ export const resGetPostDetailByPostId = (id: string) => {
 export const reqEditPost = (params: Content.ReqEditArticle) => {
 	return http.put(`${PORT1}/post/edit`, params);
 };
+
+export const reqDeletePost = (id: string) => {
+	return http.delete(`${PORT1}/post/${id}`);
+};

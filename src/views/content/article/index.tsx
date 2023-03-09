@@ -1,6 +1,7 @@
 import { Content } from "@/api/interface";
-import { getPostList } from "@/api/modules/content";
+import { getPostList, reqDeletePost } from "@/api/modules/content";
 import { CreateBtn, DeleteBtn, UpdateBtn } from "@/components/Button";
+import { callbackParams } from "@/components/Button/components/DeleteBtn";
 import BasicContent from "@/components/Content";
 import BasicTable from "@/components/Table";
 import { Space } from "antd";
@@ -41,15 +42,18 @@ const Article = () => {
 		navigate(`/content/article/option?id=${id}`);
 	};
 
-	const onDelete = () => {
-		console.log(123);
+	const onDelete = async ({ isOk, id }: callbackParams) => {
+		if (isOk) {
+			id && (await reqDeletePost(id as string));
+			getPost();
+		}
 	};
 
 	const optionRender: ITableOptions<object> = (_, record) => {
 		return (
 			<Space wrap>
 				<UpdateBtn onClick={() => onUpdate((record as PostColumns).key)} />
-				<DeleteBtn id={(record as Menu.MenuOptions).id} handleDelete={onDelete} />
+				<DeleteBtn id={(record as PostColumns).key} handleDelete={onDelete} />
 			</Space>
 		);
 	};

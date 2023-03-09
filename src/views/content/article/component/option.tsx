@@ -65,7 +65,6 @@ const Option = () => {
 	};
 
 	const onFinish = async (values: any) => {
-		console.log(values);
 		if (id) {
 			const tagValues =
 				Array.isArray(values.tag) && typeof values.tag[0] !== "number"
