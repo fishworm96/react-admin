@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
 import MdEditor, { ExposeParam } from "md-editor-rt";
 import "md-editor-rt/lib/style.css";
+import { useEffect, useRef, useState } from "react";
 
+import { getMd5 } from "@/utils/util";
 import "./markdown.less";
-import axios from "axios";
+import { reqUploadImage } from "@/api/modules/content";
 
 const MarkDownEdit = ({ content, markdownText }: { content: string; markdownText: (text: string) => void }) => {
 	const [text, setText] = useState<string>("");
@@ -55,18 +56,15 @@ const MarkDownEdit = ({ content, markdownText }: { content: string; markdownText
 					const form = new FormData();
 					form.append("file", file);
 
-					axios
-						.post("/api/img/uploads", form, {
-							headers: {
-								"Content-Type": "multipart/form-data"
-							}
-						})
-						.then(res => rev(res))
-						.catch(error => rej(error));
+					getMd5(file).then(res => {
+						form.append("md5", res as string);
+						reqUploadImage(form)
+							.then(result => rev(result))
+							.catch(error => rej(error));
+					});
 				});
 			})
 		);
-
 		callback(res.map((item: any) => item.data.url));
 	};
 

@@ -38,6 +38,11 @@ export const reqEditPost = (params: Content.ReqEditArticle) => {
 	return http.put(`${PORT1}/post/edit`, params);
 };
 
+// 删除文章
 export const reqDeletePost = (id: string) => {
 	return http.delete(`${PORT1}/post/${id}`);
+};
+
+export const reqUploadImage = (file: FormData) => {
+	return http.post(`${PORT1}/upload_image`, file, { headers: { "Content-Type": "multipart/form-data" } });
 };

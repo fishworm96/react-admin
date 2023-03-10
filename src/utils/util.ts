@@ -1,4 +1,5 @@
 import { RouteObject } from "@/routes/interface";
+import SparkMD5 from "spark-md5";
 
 /**
  * @description: 获取需要展开的 subMenu
@@ -95,4 +96,18 @@ export const findAllBreadcrumb = (menuList: Menu.MenuOptions[]): { [key: string]
 	};
 	menuList.forEach(item => loop(item));
 	return handleBreadcrumbList;
+};
+
+export const getMd5 = (file: File) => {
+	const fileReader = new FileReader();
+	const spark = new SparkMD5();
+	return new Promise(resolve => {
+		fileReader.readAsBinaryString(file);
+
+		fileReader.onload = e => {
+			spark.appendBinary(e.target?.result as string);
+			const md5 = spark.end();
+			resolve(md5);
+		};
+	});
 };

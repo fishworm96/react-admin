@@ -111,4 +111,7 @@ export namespace Content {
 	export interface ReqEditArticle extends ReqArticle {
 		post_id: string;
 	}
+	export interface UploadImage {
+		url: string;
+	}
 }
