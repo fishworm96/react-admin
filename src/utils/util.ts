@@ -104,7 +104,7 @@ export const getMd5 = (file: File) => {
 	return new Promise(resolve => {
 		fileReader.readAsBinaryString(file);
 
-		fileReader.onload = e => {
+		fileReader.onload = (e: ProgressEvent<FileReader>) => {
 			spark.appendBinary(e.target?.result as string);
 			const md5 = spark.end();
 			resolve(md5);

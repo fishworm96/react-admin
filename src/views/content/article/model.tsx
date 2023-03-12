@@ -22,7 +22,7 @@ export const postColumns = (optionRender: ITableOptions<PostColumns>) => {
 		{
 			title: "标签",
 			dataIndex: "tag",
-			render: (_: any, { tag }: any) => (
+			render: (_: unknown, { tag }: any) => (
 				<>
 					{tag.map((item: string) => {
 						let color = item.length > 5 ? "blue" : "green";
