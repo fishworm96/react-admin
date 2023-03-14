@@ -13,4 +13,5 @@ export interface RouteObject {
 	path?: string;
 	meta?: MetaProps;
 	isLink?: string;
+	errorElement?: React.ReactNode;
 }
