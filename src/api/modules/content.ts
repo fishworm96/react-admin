@@ -10,7 +10,7 @@ import { Content } from "../interface";
 
 // * 获取文章列表
 export const getPostList = () => {
-	return http.get<Content.ResArticle[]>(`${PORT1}/post`);
+	return http.get<Content.ResArticleList>(`${PORT1}/post`);
 };
 
 // 获取标签列表

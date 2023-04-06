@@ -35,6 +35,18 @@ export interface Community {
 	create_time: Date;
 }
 
+export interface ResArticle {
+	id: string;
+	author_name: string;
+	vote_num: number;
+	author_id: number;
+	status: number;
+	title: string;
+	tag: string[];
+	community: Community;
+	description: string;
+}
+
 // * 登录
 export namespace Login {
 	export interface ReqLoginForm {
@@ -71,16 +83,11 @@ export namespace System {
 }
 
 export namespace Content {
-	export interface ResArticle {
-		id: string;
-		author_name: string;
-		vote_num: number;
-		author_id: number;
-		status: number;
-		title: string;
-		tag: string[];
-		community: Community;
-		description: string;
+	export interface ResArticleList {
+		post_list: ResArticle[];
+		total_category: number;
+		total_pages: number;
+		total_tag: number;
 	}
 	export interface ResPostDetail {
 		id: string;

@@ -1,4 +1,4 @@
-import { Content } from "@/api/interface";
+import { ResArticle } from "@/api/interface";
 import { getPostList, reqDeletePost } from "@/api/modules/content";
 import { CreateBtn, DeleteBtn, UpdateBtn } from "@/components/Button";
 import { callbackParams } from "@/components/Button/components/DeleteBtn";
@@ -17,7 +17,7 @@ const Article = () => {
 		getPost();
 	}, []);
 
-	const formatData = (item: Content.ResArticle[]): PostColumns[] => {
+	const formatData = (item: ResArticle[]): PostColumns[] => {
 		return item.map(item => {
 			const { id, title, author_name, tag, community } = item;
 			const Data: PostColumns = { title, author_name, tag, key: id, category: community.name };
@@ -28,8 +28,9 @@ const Article = () => {
 	const getPost = async () => {
 		try {
 			const { data } = await getPostList();
-			data && setPostList(formatData(data));
+			data && setPostList(formatData(data.post_list));
 		} catch (err) {
+			console.log(err);
 			return;
 		}
 	};
