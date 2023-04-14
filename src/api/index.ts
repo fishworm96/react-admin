@@ -61,7 +61,7 @@ class RequestHttp {
 				if (data.code == ResultEnum.OVERDUE) {
 					store.dispatch(setToken(""));
 					message.error(data.msg);
-					window.location.hash = "/login";
+					window.location.hash = "/admin";
 					return Promise.reject(data);
 				}
 				// * 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）

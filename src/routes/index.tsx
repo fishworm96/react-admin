@@ -2,7 +2,7 @@ import Error404 from "@/components/Error/404";
 import { RouteObject } from "@/routes/interface";
 import LayoutIndex from "@/views/layout";
 import Login from "@/views/login";
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import accessRouter from "./modules/access";
 import contentRouter from "./modules/content";
 import homeRouter from "./modules/home";
@@ -19,17 +19,18 @@ Object.keys(metaRouters).forEach(item => {
 });
 
 export const router = [
+	// {
+	// 	path: "/admin",
+	// 	element: <Navigate to="/admin/login" />,
+	// 	errorElement: <Error404 />
+	// },
 	{
-		path: "/",
-		element: <Navigate to="/login" />,
+		path: "admin",
+		element: <Login />,
 		errorElement: <Error404 />
 	},
 	{
-		path: "/login",
-		element: <Login />
-	},
-	{
-		path: "/",
+		path: "admin",
 		element: <LayoutIndex />,
 		children: [homeRouter, accessRouter, contentRouter]
 	},

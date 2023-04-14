@@ -6,11 +6,11 @@ const contentRouter: RouteObject = {
 	path: "content",
 	children: [
 		{
-			path: "/content/article",
+			path: "article",
 			element: <Article />
 		},
 		{
-			path: "/content/article/option",
+			path: "article/option",
 			element: <Option />
 		}
 	]
