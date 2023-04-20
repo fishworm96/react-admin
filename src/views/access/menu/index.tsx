@@ -78,9 +78,10 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 			setMenuId(id);
 			try {
 				const { data } = await getMenuById(id);
+				console.log(data);
 				setData(data);
 			} catch {
-				message.error("获取数据失败，请重试");
+				// message.error("获取数据失败，请重试");
 			}
 		}
 	};

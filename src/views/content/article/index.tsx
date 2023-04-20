@@ -36,11 +36,11 @@ const Article = () => {
 	};
 
 	const onCreate = () => {
-		navigate("/content/article/option");
+		navigate("/admin/content/article/option");
 	};
 
 	const onUpdate = async (id: string) => {
-		navigate(`/content/article/option?id=${id}`);
+		navigate(`/admin/content/article/option?id=${id}`);
 	};
 
 	const onDelete = async ({ isOk, id }: callbackParams<string>) => {
