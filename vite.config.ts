@@ -6,6 +6,8 @@ import { visualizer } from "rollup-plugin-visualizer";
 import { createHtmlPlugin } from "vite-plugin-html";
 import viteCompression from "vite-plugin-compression";
 import eslintPlugin from "vite-plugin-eslint";
+import { Plugin as importToCDN } from "vite-plugin-cdn-import";
+import analyzer from "rollup-plugin-analyzer";
 
 // @see: https://vitejs.dev/config/
 export default defineConfig((mode: ConfigEnv): UserConfig => {
@@ -65,7 +67,37 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 					threshold: 10240,
 					algorithm: "gzip",
 					ext: ".gz"
-				})
+				}),
+			importToCDN({
+				modules: [
+					{
+						name: "react",
+						var: "React",
+						path: "https://unpkg.com/react@18/umd/react.production.min.js"
+					},
+					{
+						name: "react-dom",
+						var: "ReactDOM",
+						path: "https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+					},
+					{
+						name: "axios",
+						var: "axios",
+						path: "https://unpkg.com/axios/dist/axios.min.js"
+					},
+					{
+						name: "dayjs",
+						var: "dayjs",
+						path: "https://cdn.staticfile.org/dayjs/1.11.7/dayjs.min.js"
+					},
+					{
+						name: "antd",
+						var: "antd",
+						path: "https://cdn.bootcdn.net/ajax/libs/antd/5.3.1/antd.min.js",
+						css: "https://cdn.bootcdn.net/ajax/libs/antd/4.24.9/antd.min.css"
+					}
+				]
+			})
 		],
 		// build configure
 		build: {
@@ -79,6 +111,12 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 				}
 			},
 			rollupOptions: {
+				plugins: [
+					analyzer({
+						summaryOnly: true,
+						limit: 10
+					})
+				],
 				output: {
 					// Static resource classification and packaging
 					chunkFileNames: "assets/js/[name]-[hash].js",

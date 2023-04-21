@@ -30,7 +30,7 @@ const AvatarIcon = (props: any) => {
 			onOk: () => {
 				setToken("");
 				message.success("退出登录成功");
-				navigate("/login");
+				navigate("/admin");
 			}
 		});
 	};
