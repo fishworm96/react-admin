@@ -18,7 +18,8 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 		base: "/admin",
 		resolve: {
 			alias: {
-				"@": resolve(__dirname, "./src")
+				"@": resolve(__dirname, "src"),
+				"#": resolve(__dirname, "types")
 			}
 		},
 		// global css

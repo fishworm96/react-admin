@@ -11,8 +11,17 @@ import { MenuState } from "@/redux/interface";
 import { ADD_TITLE, EDIT_TITLE } from "@/utils/config";
 import { message, Space } from "antd";
 import React, { useEffect, useRef, useState } from "react";
+import type { ChangeEvent } from "react";
 import { connect } from "react-redux";
-import { TableColumns, tableColumns } from "./model";
+import { createList, TableColumns, tableColumns } from "./model";
+
+export interface Option {
+	value?: string | number | null;
+	label: React.ReactNode;
+	children?: Option[];
+	isLeaf?: boolean;
+	loading?: boolean;
+}
 
 export interface Data {
 	id: number;
@@ -78,7 +87,6 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 			setMenuId(id);
 			try {
 				const { data } = await getMenuById(id);
-				console.log(data);
 				setData(data);
 			} catch {
 				// message.error("获取数据失败，请重试");
@@ -94,18 +102,13 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const handleCreate = async (value: System.ReqUpdateMenu) => {
 		try {
 			setIsModalOpen(false);
-			if (menuId) {
-				updateMenu(value, menuId);
-				message.success("修改成功！");
-			} else {
-				createMenuById(value);
-				message.success("添加成功！");
-			}
+			menuId ? updateMenu(value, menuId) : createMenuById(value);
+			message.success("修改成功！");
 			await getMenuList();
 		} catch {
 			setIsModalOpen(false);
 		}
-		window.location.reload();
+		// window.location.reload();
 	};
 
 	const onDelete = async ({ isOk, id }: callbackParams<number>) => {
@@ -113,7 +116,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 			id && (await deleteMenuById(id));
 			await getMenuList();
 			message.success("删除成功！");
-			window.location.reload();
+			// window.location.reload();
 		}
 	};
 
@@ -130,6 +133,21 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 		if (list[0].module_id === 0) lists.unshift({ label: "根目录", value: 0 });
 		return lists;
 	};
+
+	const handlerCascaderOnChange = (value: string[], selectedOptions: Option[]) => {
+		const lastOption = selectedOptions[selectedOptions.length - 1];
+		if (lastOption) {
+			const module_id = typeof lastOption.value === "string" ? lastOption.value.split("_")[1] : lastOption.value;
+			const parent_name = typeof lastOption.label === "string" ? lastOption.label : undefined;
+			module_id && parent_name && createFormRef.current?.handlerChange({ module_id, parent_name });
+		}
+	};
+
+	const changeInputType = (e: ChangeEvent<HTMLInputElement>) => {
+		createFormRef.current?.handlerChange({ type: +e.target.value });
+	};
+
+	const displayRender = (labels: string[]) => labels[labels.length - 1];
 
 	const optionRender: ITableOptions<object> = (_, record) => {
 		return (
@@ -148,8 +166,12 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 				<BasicModal width={1000} title={modalTitle} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
 					<BasicForm
 						formRef={createFormRef}
-						options={cascadedOptions(menuList!)}
-						list={menuList!}
+						list={createList({
+							displayRender,
+							options: cascadedOptions(menuList!),
+							changeInputType,
+							handlerCascaderOnChange
+						})}
 						data={data}
 						handleFinish={handleCreate}
 					/>
