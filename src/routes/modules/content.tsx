@@ -1,6 +1,7 @@
 import { RouteObject } from "@/routes/interface";
 import Article from "@/views/content/article";
 import Option from "@/views/content/article/component/option";
+import Tag from "@/views/content/tag";
 
 const contentRouter: RouteObject = {
 	path: "content",
@@ -12,6 +13,10 @@ const contentRouter: RouteObject = {
 		{
 			path: "article/option",
 			element: <Option />
+		},
+		{
+			path: "tag",
+			element: <Tag />
 		}
 	]
 };

@@ -81,9 +81,6 @@ export const initComProps = (component: ComponentType): ComponentProps => {
 			return {};
 
 		default:
-			return {
-				allowClear: true,
-				placeholder: PLEASE_ENTER
-			};
+			return {};
 	}
 };

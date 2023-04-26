@@ -5,10 +5,12 @@ import { ResultData } from "@/api/interface";
 import { ResultEnum } from "@/enums/httpEnum";
 import { checkStatus } from "./helper/checkStatus";
 import { AxiosCanceler } from "./helper/axiosCancel";
-import { setToken } from "@/redux/modules/global/action";
 import { message } from "antd";
 import { store } from "@/redux";
+// import { useAppDispatch } from "@/redux/hooks";
+// import { setToken } from "@/redux/modules/global/globalSlice";
 
+// const dispatch = useAppDispatch();
 const axiosCanceler = new AxiosCanceler();
 
 const config = {
@@ -59,7 +61,7 @@ class RequestHttp {
 				tryHideFullScreenLoading();
 				// * 登录失效（code == 599）
 				if (data.code == ResultEnum.OVERDUE) {
-					store.dispatch(setToken(""));
+					// dispatch(setToken(""));
 					message.error(data.msg);
 					window.location.hash = "/admin";
 					return Promise.reject(data);

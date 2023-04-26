@@ -1,20 +1,19 @@
 // import { getAuthorButtons } from "@/api/modules/login";
-import { store } from "@/redux";
-import { setAuthButtons } from "@/redux/modules/auth/actions";
-import { updateCollapse } from "@/redux/modules/menu/action";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { updateCollapse } from "@/redux/modules/menu/menuSlice";
 import { Layout } from "antd";
 import { useEffect } from "react";
-import { connect } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import LayoutFooter from "./components/Footer";
+import { LayoutFooter } from "./components/Footer";
 import LayoutHeader from "./components/Header";
 import LayoutMenu from "./components/Menu";
 import "./index.less";
 
 const LayoutIndex = (props: any) => {
+	const isCollapse = useAppSelector(state => state.menu.isCollapse);
+	const dispatch = useAppDispatch();
 	const { Sider, Content } = Layout;
-	const { isCollapse, updateCollapse } = props;
-	const { token } = store.getState().global;
+	const token = useAppSelector(state => state.global.token);
 	if (!token) return <Navigate to="/login" replace />;
 
 	// 获取按钮权限列表
@@ -29,8 +28,8 @@ const LayoutIndex = (props: any) => {
 		window.onresize = () => {
 			return (() => {
 				let screenWidth = document.body.clientWidth;
-				if (!isCollapse && screenWidth < 1200) updateCollapse(true);
-				if (!isCollapse && screenWidth > 1200) updateCollapse(false);
+				if (!isCollapse && screenWidth < 1200) dispatch(updateCollapse(true));
+				if (!isCollapse && screenWidth > 1200) dispatch(updateCollapse(false));
 			})();
 		};
 	};
@@ -58,6 +57,4 @@ const LayoutIndex = (props: any) => {
 	);
 };
 
-const mapStateToProps = (state: any) => state.menu;
-const mapDispatchToProps = { setAuthButtons, updateCollapse };
-export default connect(mapStateToProps, mapDispatchToProps)(LayoutIndex);
+export default LayoutIndex;

@@ -1,19 +1,19 @@
 import { Login } from "@/api/interface";
 import { loginApi } from "@/api/modules/login";
 import { HOME_URL } from "@/config/config";
-import { setToken } from "@/redux/modules/global/action";
+import { useAppDispatch } from "@/redux/hooks";
+import { setToken } from "@/redux/modules/global/globalSlice";
+import { setTabsList } from "@/redux/modules/tabs/tabsSlice";
 // import { useTranslation } from "react-i18next";
-import { setTabsList } from "@/redux/modules/tabs/action";
 import { CloseCircleOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, message } from "antd";
 // import md5 from "js-md5";
 import { useState } from "react";
-import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const LoginForm = (props: any) => {
+export const LoginForm = () => {
 	// const { t } = useTranslation();
-	const { setToken, setTabsList } = props;
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState<boolean>(false);
@@ -24,8 +24,8 @@ const LoginForm = (props: any) => {
 			setLoading(true);
 			// loginForm.password = md5(loginForm.password);
 			const { data } = await loginApi(loginForm);
-			setToken(data?.token);
-			setTabsList([]);
+			data && dispatch(setToken(data.token));
+			dispatch(setTabsList([]));
 			message.success("登录成功！");
 			navigate(HOME_URL);
 		} finally {
@@ -70,6 +70,3 @@ const LoginForm = (props: any) => {
 		</Form>
 	);
 };
-
-const mapDispatchToProps = { setToken, setTabsList };
-export default connect(null, mapDispatchToProps)(LoginForm);

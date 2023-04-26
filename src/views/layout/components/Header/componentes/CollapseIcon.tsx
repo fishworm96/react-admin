@@ -1,15 +1,15 @@
-import { updateCollapse } from "@/redux/modules/menu/action";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { updateCollapse } from "@/redux/modules/menu/menuSlice";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { connect } from "react-redux";
 
-const CollapseIcon = (props: any) => {
-	const { isCollapse, updateCollapse } = props;
-
+export const CollapseIcon = () => {
+	const isCollapse = useAppSelector(state => state.menu.isCollapse);
+	const dispatch = useAppDispatch();
 	return (
 		<div
 			className="collapsed"
 			onClick={() => {
-				updateCollapse(!isCollapse);
+				dispatch(updateCollapse(!isCollapse));
 			}}
 		>
 			{isCollapse ? (
@@ -20,7 +20,3 @@ const CollapseIcon = (props: any) => {
 		</div>
 	);
 };
-
-const mapStateToProps = (state: any) => state.menu;
-const mapDispatchToProps = { updateCollapse };
-export default connect(mapStateToProps, mapDispatchToProps)(CollapseIcon);

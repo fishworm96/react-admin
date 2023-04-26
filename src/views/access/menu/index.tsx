@@ -12,8 +12,9 @@ import { ADD_TITLE, EDIT_TITLE } from "@/utils/config";
 import { message, Space } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
-import { connect } from "react-redux";
 import { createList, TableColumns, tableColumns } from "./model";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setMenuListAction } from "@/redux/modules/menu/menuSlice";
 
 export interface Option {
 	value?: string | number | null;
@@ -41,7 +42,9 @@ export interface CascadedOptions {
 	disabled?: boolean;
 }
 
-const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
+const Menu: React.FC<MenuState> = () => {
+	const dispatch = useAppDispatch();
+	const menuListValue = useAppSelector(state => state.menu.menuList);
 	const createFormRef = useRef<IFormFn>(null);
 	const [data, setData] = useState<Data>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,8 +53,8 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const [tableData, seTableData] = useState<TableColumns[]>([]);
 
 	useEffect(() => {
-		seTableData(changeTableData(menuList!));
-	}, [menuList]);
+		menuListValue && seTableData(changeTableData(menuListValue));
+	}, [menuListValue]);
 
 	const changeTableData = (list: Menu.MenuOptions[]): TableColumns[] => {
 		return list.map((item, index) => {
@@ -102,21 +105,24 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	const handleCreate = async (value: System.ReqUpdateMenu) => {
 		try {
 			setIsModalOpen(false);
-			menuId ? updateMenu(value, menuId) : createMenuById(value);
-			message.success("修改成功！");
-			await getMenuList();
+			menuId ? await updateMenu(value, menuId) : await createMenuById(value);
+			const { data } = await getMenuList();
+			data && dispatch(setMenuListAction(data));
 		} catch {
 			setIsModalOpen(false);
 		}
-		// window.location.reload();
 	};
 
 	const onDelete = async ({ isOk, id }: callbackParams<number>) => {
-		if (isOk) {
-			id && (await deleteMenuById(id));
-			await getMenuList();
-			message.success("删除成功！");
-			// window.location.reload();
+		try {
+			if (isOk && id) {
+				await deleteMenuById(id);
+				const { data } = await getMenuList();
+				data && dispatch(setMenuListAction(data));
+				message.success("删除成功！");
+			}
+		} finally {
+			setIsModalOpen(false);
 		}
 	};
 
@@ -139,7 +145,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 		if (lastOption) {
 			const module_id = typeof lastOption.value === "string" ? lastOption.value.split("_")[1] : lastOption.value;
 			const parent_name = typeof lastOption.label === "string" ? lastOption.label : undefined;
-			module_id && parent_name && createFormRef.current?.handlerChange({ module_id, parent_name });
+			module_id && parent_name && createFormRef.current?.handlerChange({ module_id: +module_id, parent_name });
 		}
 	};
 
@@ -168,7 +174,7 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 						formRef={createFormRef}
 						list={createList({
 							displayRender,
-							options: cascadedOptions(menuList!),
+							options: cascadedOptions(menuListValue!),
 							changeInputType,
 							handlerCascaderOnChange
 						})}
@@ -181,5 +187,4 @@ const Menu: React.FC<MenuState> = ({ menuList }: MenuState) => {
 	);
 };
 
-const mapStateToProps = (state: MenuState) => state.menu;
-export default connect(mapStateToProps)(Menu);
+export default Menu;

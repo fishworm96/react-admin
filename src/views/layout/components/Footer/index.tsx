@@ -1,8 +1,8 @@
-import { connect } from "react-redux";
+import { useAppSelector } from "@/redux/hooks";
 import "./index.less";
 
-const LayoutFooter = (props: any) => {
-	const { themeConfig } = props;
+export const LayoutFooter = () => {
+	const themeConfig = useAppSelector(state => state.global.themeConfig);
 	return (
 		<>
 			{!themeConfig.footer && (
@@ -15,6 +15,3 @@ const LayoutFooter = (props: any) => {
 		</>
 	);
 };
-
-const mapStateToProps = (state: any) => state.global;
-export default connect(mapStateToProps)(LayoutFooter);

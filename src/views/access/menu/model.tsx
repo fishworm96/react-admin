@@ -111,9 +111,9 @@ export const createList = ({ displayRender, options, changeInputType, handlerCas
 		}
 	},
 	{
-		label: "",
+		label: " ",
 		name: "module_id",
-		component: "customize"
-		// render: { Div: () => <div></div> }
+		component: "customize",
+		render: () => <div></div>
 	}
 ];

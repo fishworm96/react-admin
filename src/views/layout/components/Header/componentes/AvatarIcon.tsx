@@ -2,15 +2,15 @@ import { HOME_URL } from "@/config/config";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { message, Modal, Menu, Dropdown, Avatar } from "antd";
 import { useRef } from "react";
-import { setToken } from "@/redux/modules/global/action";
 import { useNavigate } from "react-router-dom";
 import avatar from "@/assets/images/avatar.png";
 import InfoModal from "./InfoModal";
-import { connect } from "react-redux";
 import PasswordModal from "./PasswordModal";
+import { useAppDispatch } from "@/redux/hooks";
+import { setToken } from "@/redux/modules/global/globalSlice";
 
-const AvatarIcon = (props: any) => {
-	const { setToken } = props;
+export const AvatarIcon = () => {
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	interface ModalProps {
@@ -28,7 +28,7 @@ const AvatarIcon = (props: any) => {
 			okText: "确认",
 			cancelText: "取消",
 			onOk: () => {
-				setToken("");
+				dispatch(setToken(""));
 				message.success("退出登录成功");
 				navigate("/admin");
 			}
@@ -75,6 +75,3 @@ const AvatarIcon = (props: any) => {
 		</>
 	);
 };
-
-const mapDispatchToProps = { setToken };
-export default connect(null, mapDispatchToProps)(AvatarIcon);

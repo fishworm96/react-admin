@@ -32,7 +32,8 @@ export const router = [
 	{
 		path: "admin",
 		element: <LayoutIndex />,
-		children: [homeRouter, accessRouter, contentRouter]
+		children: [homeRouter, accessRouter, contentRouter],
+		errorElement: <Error404 />
 	},
 	...routerArray
 ];
