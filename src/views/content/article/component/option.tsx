@@ -1,4 +1,4 @@
-import { Content } from "@/api/interface";
+import { ContentApi } from "@/api/interface";
 import {
 	reqCreateArticle,
 	reqEditPost,
@@ -30,7 +30,7 @@ const Option = () => {
 		getTagList();
 	}, []);
 
-	const formData = (data: Content.ResTag[]) => {
+	const formData = (data: ContentApi.ResTag[]) => {
 		let list: Data[] = [];
 		data.forEach(item => {
 			const { id, name } = item;

@@ -94,7 +94,6 @@ const LayoutMenu = () => {
 
 	useEffect(() => {
 		if (menuListValue) {
-			console.log(menuListValue);
 			setMenuList(deepLoopFloat(menuListValue));
 			dispatch(setBreadcrumbList(findAllBreadcrumb(menuListValue)));
 			const dynamicRouter = handleRouter(menuListValue);

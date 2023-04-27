@@ -1,4 +1,4 @@
-import { System } from "@/api/interface";
+import { SystemApi } from "@/api/interface";
 import { getMenuList } from "@/api/modules/login";
 import { createMenuById, deleteMenuById, getMenuById, updateMenu } from "@/api/modules/system";
 import { CreateBtn, DeleteBtn, UpdateBtn } from "@/components/Button";
@@ -102,7 +102,7 @@ const Menu: React.FC<MenuState> = () => {
 	};
 
 	// 创建或更新菜单
-	const handleCreate = async (value: System.ReqUpdateMenu) => {
+	const handleCreate = async (value: SystemApi.ReqUpdateMenu) => {
 		try {
 			setIsModalOpen(false);
 			menuId ? await updateMenu(value, menuId) : await createMenuById(value);

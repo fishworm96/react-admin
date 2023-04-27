@@ -48,7 +48,7 @@ export interface ResArticle {
 }
 
 // * 登录
-export namespace Login {
+export namespace LoginApi {
 	export interface ReqLoginForm {
 		username: string;
 		password: string;
@@ -61,7 +61,7 @@ export namespace Login {
 	}
 }
 
-export namespace System {
+export namespace SystemApi {
 	export interface ResMenuInfo {
 		id: number;
 		module_id: number;
@@ -82,7 +82,7 @@ export namespace System {
 	}
 }
 
-export namespace Content {
+export namespace ContentApi {
 	export interface ResArticleList {
 		post_list: ResArticle[];
 		total_category: number;
@@ -120,5 +120,12 @@ export namespace Content {
 	}
 	export interface UploadImage {
 		url: string;
+	}
+}
+
+export namespace TagApi {
+	export interface ReqTagList {
+		id: number;
+		name: string;
 	}
 }

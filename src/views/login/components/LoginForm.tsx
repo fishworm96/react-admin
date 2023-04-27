@@ -1,4 +1,4 @@
-import { Login } from "@/api/interface";
+import { LoginApi } from "@/api/interface";
 import { loginApi } from "@/api/modules/login";
 import { HOME_URL } from "@/config/config";
 import { useAppDispatch } from "@/redux/hooks";
@@ -19,7 +19,7 @@ export const LoginForm = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	// 登录
-	const onFinish = async (loginForm: Login.ReqLoginForm) => {
+	const onFinish = async (loginForm: LoginApi.ReqLoginForm) => {
 		try {
 			setLoading(true);
 			// loginForm.password = md5(loginForm.password);

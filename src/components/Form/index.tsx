@@ -1,5 +1,5 @@
 import { FormList } from "#/form";
-import { Data } from "@/views/access/menu";
+// import { Data } from "@/views/access/menu";
 import { Form, FormProps, Space } from "antd";
 import { ReactNode, Ref, useEffect, useImperativeHandle } from "react";
 import { getComponent } from "./utils/componentMap";
@@ -12,15 +12,15 @@ export interface IFormFn {
 	handlerChange: <T extends Record<string, string | number>>(...args: [T]) => void;
 }
 
-interface Props extends FormProps {
+interface Props<T> extends FormProps {
 	list: FormList[];
-	data?: Data;
+	data?: T;
 	formRef: Ref<IFormFn>;
 	children?: ReactNode;
 	handleFinish: FormProps["onFinish"];
 }
 
-const BasicForm = ({ list, data, children, formRef, handleFinish }: Props) => {
+const BasicForm = <T extends {}>({ list, data, children, formRef, handleFinish }: Props<T>) => {
 	const [form] = Form.useForm();
 
 	useEffect(() => {
