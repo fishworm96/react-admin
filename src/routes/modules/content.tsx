@@ -1,18 +1,16 @@
 import { RouteObject } from "@/routes/interface";
-import Article from "@/views/content/article";
-import Option from "@/views/content/article/component/option";
-import Tag from "@/views/content/tag";
+import lazyLoad from "../utils/lazyLoad";
 
 const contentRouter: RouteObject = {
 	path: "content",
 	children: [
 		{
 			path: "article",
-			element: <Article />,
+			element: lazyLoad(() => import("@/views/content/article")),
 			children: [
 				{
 					path: "option",
-					element: <Option />,
+					element: lazyLoad(() => import("@/views/content/article/component/option")),
 					meta: {
 						requireAuth: true
 					}
@@ -24,7 +22,7 @@ const contentRouter: RouteObject = {
 		},
 		{
 			path: "tag",
-			element: <Tag />,
+			element: lazyLoad(() => import("@/views/content/tag")),
 			meta: {
 				requireAuth: true
 			}

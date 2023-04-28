@@ -1,12 +1,12 @@
 import { RouteObject } from "@/routes/interface";
-import Menu from "@/views/access/menu";
+import lazyLoad from "../utils/lazyLoad";
 
 const accessRouter: RouteObject = {
 	path: "access",
 	children: [
 		{
 			path: "menu",
-			element: <Menu />,
+			element: lazyLoad(() => import("@/views/access/menu")),
 			meta: {
 				requireAuth: true
 			}

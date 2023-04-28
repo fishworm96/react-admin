@@ -1,7 +1,8 @@
 import { ConfigProvider } from "antd";
-import { RouterProvider } from "react-router-dom";
 import useTheme from "@/hooks/useTheme";
-import router from "./routes";
+import Router from "./routes";
+import { BrowserRouter } from "react-router-dom";
+import AuthRouter from "./routes/utils/authRouter";
 
 export function App(props: any) {
 	const { assemblySize, themeConfig = "weak" } = props;
@@ -9,8 +10,12 @@ export function App(props: any) {
 	useTheme(themeConfig);
 
 	return (
-		<ConfigProvider componentSize={assemblySize}>
-			<RouterProvider router={router} />
-		</ConfigProvider>
+		<BrowserRouter>
+			<ConfigProvider componentSize={assemblySize}>
+				<AuthRouter>
+					<Router />
+				</AuthRouter>
+			</ConfigProvider>
+		</BrowserRouter>
 	);
 }

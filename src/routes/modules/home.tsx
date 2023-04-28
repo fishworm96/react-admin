@@ -1,9 +1,9 @@
 import { RouteObject } from "@/routes/interface";
-import Home from "@/views/home";
+import lazyLoad from "../utils/lazyLoad";
 
 const homeRouter: RouteObject = {
 	path: "home",
-	element: <Home />,
+	element: lazyLoad(() => import("@/views/home")),
 	meta: {
 		requireAuth: true
 	}
