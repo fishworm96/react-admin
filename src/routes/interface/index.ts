@@ -1,7 +1,7 @@
 export interface MetaProps {
 	keepAlive?: boolean;
-	requiresAuth?: boolean;
-	title: string;
+	requireAuth?: boolean;
+	title?: string;
 	key?: string;
 }
 

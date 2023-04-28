@@ -4,7 +4,7 @@ const Error401 = () => {
 	return (
 		<>
 			<div>没有访问权限</div>
-			<Link to="/home">返回登录页</Link>
+			<Link to="/admin/home">返回登录页</Link>
 		</>
 	);
 };

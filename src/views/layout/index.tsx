@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateCollapse } from "@/redux/modules/menu/menuSlice";
 import { Layout } from "antd";
 import { useEffect } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { LayoutFooter } from "./components/Footer";
 import LayoutHeader from "./components/Header";
 import LayoutMenu from "./components/Menu";
@@ -13,9 +13,6 @@ const LayoutIndex = (props: any) => {
 	const isCollapse = useAppSelector(state => state.menu.isCollapse);
 	const dispatch = useAppDispatch();
 	const { Sider, Content } = Layout;
-	const token = useAppSelector(state => state.global.token);
-	if (!token) return <Navigate to="/login" replace />;
-
 	// 获取按钮权限列表
 	// const getAuthButtonsList = async () => {
 	// 	const { data } = await getAuthorButtons();

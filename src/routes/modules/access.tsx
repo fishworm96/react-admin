@@ -6,9 +6,11 @@ const accessRouter: RouteObject = {
 	children: [
 		{
 			path: "menu",
-			element: <Menu />
+			element: <Menu />,
+			meta: {
+				requireAuth: true
+			}
 		}
 	]
 };
-
 export default accessRouter;

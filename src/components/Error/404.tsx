@@ -4,7 +4,7 @@ const Error404 = () => {
 	return (
 		<>
 			<div>404没有该页面</div>
-			<Link to="/admin">返回登录页</Link>
+			<Link to="/admin/home">返回登录页</Link>
 		</>
 	);
 };

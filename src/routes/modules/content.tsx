@@ -8,15 +8,26 @@ const contentRouter: RouteObject = {
 	children: [
 		{
 			path: "article",
-			element: <Article />
-		},
-		{
-			path: "article/option",
-			element: <Option />
+			element: <Article />,
+			children: [
+				{
+					path: "option",
+					element: <Option />,
+					meta: {
+						requireAuth: true
+					}
+				}
+			],
+			meta: {
+				requireAuth: true
+			}
 		},
 		{
 			path: "tag",
-			element: <Tag />
+			element: <Tag />,
+			meta: {
+				requireAuth: true
+			}
 		}
 	]
 };
