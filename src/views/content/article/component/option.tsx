@@ -1,11 +1,5 @@
 import { ContentApi } from "@/api/interface";
-import {
-	reqCreateArticle,
-	reqEditPost,
-	resGetCategoryList,
-	resGetPostDetailByPostId,
-	resGetTagList as reqGetTagList
-} from "@/api/modules/content";
+import { createArticle, updatePost, getCategoryList, getPostDetailByPostId, getTagList } from "@/api/modules/content";
 import { Button, Form, Input, Select, Space } from "antd";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -27,7 +21,7 @@ const Option = () => {
 	const [content, setContent] = useState<string>("");
 
 	useEffect(() => {
-		getTagList();
+		handleGetTagList();
 	}, []);
 
 	const formData = (data: ContentApi.ResTag[]) => {
@@ -40,20 +34,19 @@ const Option = () => {
 	};
 
 	// 获取标签列表
-	const getTagList = async () => {
+	const handleGetTagList = async () => {
 		try {
-			const [tagListRes, categoryListRes] = await Promise.all([reqGetTagList(), resGetCategoryList()]);
+			const [tagListRes, categoryListRes] = await Promise.all([getTagList(), getCategoryList()]);
 			setTagList(formData(tagListRes.data!));
 			setCategoryList(formData(categoryListRes.data!));
 			if (id) {
-				const { data } = await resGetPostDetailByPostId(id);
+				const { data } = await getPostDetailByPostId(id);
 				data && setContent(data?.content);
 				data && form.setFieldsValue({ ...data, tag: formData(data.tag) });
 			}
 		} catch (error) {
 			// 处理错误信息
 			return;
-			console.log(error);
 			// 显示错误信息给用户
 			// message.error("获取标签和分类列表失败，请稍后重试");
 		}
@@ -69,9 +62,9 @@ const Option = () => {
 				Array.isArray(values.tag) && typeof values.tag[0] !== "number"
 					? values.tag.map((option: { value: number; label: string }) => option.value)
 					: [...values.tag];
-			await reqEditPost({ ...values, tag: tagValues, post_id: id, content: text });
+			await updatePost({ ...values, tag: tagValues, post_id: id, content: text });
 		} else {
-			await reqCreateArticle({ ...values, content: text });
+			await createArticle({ ...values, content: text });
 		}
 		navigate(-1);
 	};

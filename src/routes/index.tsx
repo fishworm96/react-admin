@@ -34,6 +34,10 @@ export let router: RouteObject[] = [
 		meta: {
 			requireAuth: true
 		}
+	},
+	{
+		path: "*",
+		element: <Error404 />
 	}
 ];
 

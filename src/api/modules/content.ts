@@ -14,35 +14,35 @@ export const getPostList = () => {
 };
 
 // 获取标签列表
-export const resGetTagList = () => {
+export const getTagList = () => {
 	return http.get<ContentApi.ResTag[]>(`${PORT1}/tag`);
 };
 
 // 获取分类列表
-export const resGetCategoryList = () => {
+export const getCategoryList = () => {
 	return http.get<ContentApi.ResTag[]>(`${PORT1}/community`);
 };
 
 // 创建文章
-export const reqCreateArticle = (params: ContentApi.ReqArticle) => {
+export const createArticle = (params: ContentApi.ReqArticle) => {
 	return http.post(`${PORT1}/post`, params);
 };
 
 // 获取文章信息
-export const resGetPostDetailByPostId = (id: string) => {
+export const getPostDetailByPostId = (id: string) => {
 	return http.get<ContentApi.ResPostDetail>(`${PORT1}/post/${id}`);
 };
 
 // 修改文章
-export const reqEditPost = (params: ContentApi.ReqEditArticle) => {
+export const updatePost = (params: ContentApi.ReqEditArticle) => {
 	return http.put(`${PORT1}/post/edit`, params);
 };
 
 // 删除文章
-export const reqDeletePost = (id: string) => {
+export const deletePost = (id: string) => {
 	return http.delete(`${PORT1}/post/${id}`);
 };
 
-export const reqUploadImage = (file: FormData) => {
+export const uploadImage = (file: FormData) => {
 	return http.post(`${PORT1}/upload_image`, file, { headers: { "Content-Type": "multipart/form-data" } });
 };

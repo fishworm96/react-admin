@@ -1,5 +1,5 @@
 import { ResArticle } from "@/api/interface";
-import { getPostList, reqDeletePost } from "@/api/modules/content";
+import { getPostList, deletePost } from "@/api/modules/content";
 import { CreateBtn, DeleteBtn, UpdateBtn } from "@/components/Button";
 import { callbackParams } from "@/components/Button/components/DeleteBtn";
 import BasicContent from "@/components/Content";
@@ -45,7 +45,7 @@ const Article = () => {
 
 	const onDelete = async ({ isOk, id }: callbackParams<string>) => {
 		if (isOk) {
-			id && (await reqDeletePost(id));
+			id && (await deletePost(id));
 			getPost();
 		}
 	};
