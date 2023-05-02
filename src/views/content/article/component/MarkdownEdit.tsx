@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { getMd5 } from "@/utils/util";
 import "./markdown.less";
-import { uploadImage } from "@/api/modules/content";
+import { uploadImage } from "@/api/modules/upload";
 
 const MarkDownEdit = ({ content, markdownText }: { content: string; markdownText: (text: string) => void }) => {
 	const [text, setText] = useState<string>("");
@@ -54,10 +54,10 @@ const MarkDownEdit = ({ content, markdownText }: { content: string; markdownText
 			files.map(file => {
 				return new Promise((rev, rej) => {
 					const form = new FormData();
-					form.append("file", file);
+					form.append("image", file);
 
 					getMd5(file).then(res => {
-						form.append("md5", res as string);
+						form.append("md5", res);
 						uploadImage(form)
 							.then(result => rev(result))
 							.catch(error => rej(error));

@@ -7,14 +7,14 @@ const homeRouter: Array<RouteObject> = [
 		path: "401",
 		element: <Error401 />,
 		meta: {
-			requireAuth: true
+			requireAuth: false
 		}
 	},
 	{
 		path: "*",
 		element: <Error404 />,
 		meta: {
-			requireAuth: true
+			requireAuth: false
 		}
 	}
 ];

@@ -98,10 +98,11 @@ export const findAllBreadcrumb = (menuList: Menu.MenuOptions[]): { [key: string]
 	return handleBreadcrumbList;
 };
 
-export const getMd5 = (file: File) => {
+export const getMd5 = (file: File): Promise<string> => {
 	const fileReader = new FileReader();
 	const spark = new SparkMD5();
 	return new Promise(resolve => {
+		// Cast the file parameter to Blob
 		fileReader.readAsBinaryString(file);
 
 		fileReader.onload = e => {

@@ -14,7 +14,7 @@ export const handleValuePropName = (component: ComponentType): string => {
 			return "checked";
 
 		case "Upload":
-			return "fileList";
+			return "";
 
 		default:
 			return "value";

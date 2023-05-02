@@ -5,7 +5,8 @@ const homeRouter: RouteObject = {
 	path: "home",
 	element: lazyLoad(() => import("@/views/home")),
 	meta: {
-		requireAuth: true
+		requireAuth: true,
+		title: "首页"
 	}
 };
 

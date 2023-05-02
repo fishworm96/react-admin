@@ -26,6 +26,13 @@ const contentRouter: RouteObject = {
 			meta: {
 				requireAuth: true
 			}
+		},
+		{
+			path: "category",
+			element: lazyLoad(() => import("@/views/content/category")),
+			meta: {
+				requireAuth: true
+			}
 		}
 	]
 };

@@ -1,5 +1,5 @@
 import { ContentApi } from "@/api/interface";
-import { createArticle, updatePost, getCategoryList, getPostDetailByPostId, getTagList } from "@/api/modules/content";
+import { createArticle, updatePost, getCategoryNameList, getPostDetailByPostId, getTagList } from "@/api/modules/content";
 import { Button, Form, Input, Select, Space } from "antd";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -36,7 +36,7 @@ const Option = () => {
 	// 获取标签列表
 	const handleGetTagList = async () => {
 		try {
-			const [tagListRes, categoryListRes] = await Promise.all([getTagList(), getCategoryList()]);
+			const [tagListRes, categoryListRes] = await Promise.all([getTagList(), getCategoryNameList()]);
 			setTagList(formData(tagListRes.data!));
 			setCategoryList(formData(categoryListRes.data!));
 			if (id) {

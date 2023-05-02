@@ -6,7 +6,7 @@ export interface Result {
 
 // * 请求响应参数(包含data)
 export interface ResultData<T = any> extends Result {
-	data?: T;
+	data: T;
 }
 
 // * 分页响应参数
@@ -127,5 +127,14 @@ export namespace TagApi {
 	export interface ReqTagList {
 		id: number;
 		name: string;
+	}
+}
+
+export namespace CategoryApi {
+	export interface Category {
+		id: number;
+		name: string;
+		image: string;
+		md5: string;
 	}
 }

@@ -95,7 +95,7 @@ const Article = () => {
 			<>
 				<CreateBtn onCreate={onCreate} />
 				{tag.length > 0 && <BasicTable columns={tagColumns(optionRender)} dataSource={tag} />}
-				<BasicModal width={1000} title={modalTitle} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
+				<BasicModal title={modalTitle} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
 					<BasicForm formRef={createFormRef} list={createList()} data={tagName} handleFinish={handleCreate} />
 				</BasicModal>
 			</>

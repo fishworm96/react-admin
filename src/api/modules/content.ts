@@ -19,7 +19,7 @@ export const getTagList = () => {
 };
 
 // 获取分类列表
-export const getCategoryList = () => {
+export const getCategoryNameList = () => {
 	return http.get<ContentApi.ResTag[]>(`${PORT1}/community`);
 };
 
@@ -41,8 +41,4 @@ export const updatePost = (params: ContentApi.ReqEditArticle) => {
 // 删除文章
 export const deletePost = (id: string) => {
 	return http.delete(`${PORT1}/post/${id}`);
-};
-
-export const uploadImage = (file: FormData) => {
-	return http.post(`${PORT1}/upload_image`, file, { headers: { "Content-Type": "multipart/form-data" } });
 };
