@@ -6,19 +6,23 @@ const contentRouter: RouteObject = {
 	children: [
 		{
 			path: "article",
-			element: lazyLoad(() => import("@/views/content/article")),
 			children: [
+				{
+					path: "",
+					element: lazyLoad(() => import("@/views/content/article")),
+					meta: {
+						requireAuth: true
+					}
+				},
 				{
 					path: "option",
 					element: lazyLoad(() => import("@/views/content/article/component/option")),
 					meta: {
-						requireAuth: true
+						requireAuth: true,
+						title: "文章编辑"
 					}
 				}
-			],
-			meta: {
-				requireAuth: true
-			}
+			]
 		},
 		{
 			path: "tag",

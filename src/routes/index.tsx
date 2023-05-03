@@ -30,10 +30,7 @@ export let router: RouteObject[] = [
 	{
 		path: "admin",
 		element: <LayoutIndex />,
-		children: [...routerArray],
-		meta: {
-			requireAuth: true
-		}
+		children: [...routerArray]
 	},
 	{
 		path: "*",
