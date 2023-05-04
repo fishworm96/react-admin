@@ -27,6 +27,9 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 			preprocessorOptions: {
 				scss: {
 					additionalData: `@import "@/styles/var.less";`
+				},
+				less: {
+					additionalData: `@import "@/styles/var.less";`
 				}
 			}
 		},
@@ -95,7 +98,7 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 						name: "antd",
 						var: "antd",
 						path: "https://cdn.bootcdn.net/ajax/libs/antd/5.3.1/antd.min.js",
-						css: "https://cdn.bootcdn.net/ajax/libs/antd/4.24.9/antd.min.css"
+						css: "https://cdn.staticfile.org/antd/4.24.9/antd.min.css"
 					}
 				]
 			})
