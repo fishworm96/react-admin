@@ -71,6 +71,7 @@ export namespace SystemApi {
 		path: string;
 		title: string;
 		parentName: string;
+		children?: SystemApi.ResMenuInfo[];
 	}
 	export interface ReqUpdateMenu {
 		title: string;
@@ -136,5 +137,21 @@ export namespace CategoryApi {
 		name: string;
 		image: string;
 		md5: string;
+	}
+}
+
+export namespace RoleApi {
+	export interface RoleList {
+		id: number;
+		title: string;
+		description: string;
+	}
+	export interface Role {
+		title: string;
+		description: string;
+	}
+	export interface RoleAccess {
+		role: RoleApi.RoleList;
+		access_ids: string[];
 	}
 }

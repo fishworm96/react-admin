@@ -1,5 +1,5 @@
 import type { ComponentType, FormList } from "#/form";
-import { Button, Cascader, Input, Select, Upload } from "antd";
+import { Button, Cascader, Input, Select, Tree, Upload } from "antd";
 import { initComProps } from "./helper";
 
 const componentMap = new Map();
@@ -10,6 +10,7 @@ componentMap.set("Select", Select);
 componentMap.set("Cascader", Cascader);
 componentMap.set("Button", Button);
 componentMap.set("Upload", Upload);
+componentMap.set("Tree", Tree);
 
 export const getComponent = ({ component, componentProps, render, children }: FormList) => {
 	// 当组件类型为自定义时

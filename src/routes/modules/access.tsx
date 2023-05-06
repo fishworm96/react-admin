@@ -10,6 +10,13 @@ const accessRouter: RouteObject = {
 			meta: {
 				requireAuth: true
 			}
+		},
+		{
+			path: "role",
+			element: lazyLoad(() => import("@/views/access/role")),
+			meta: {
+				requireAuth: true
+			}
 		}
 	]
 };

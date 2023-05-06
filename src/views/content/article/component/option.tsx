@@ -37,12 +37,12 @@ const Option = () => {
 	const handleGetTagList = async () => {
 		try {
 			const [tagListRes, categoryListRes] = await Promise.all([getTagList(), getCategoryNameList()]);
-			setTagList(formData(tagListRes.data!));
-			setCategoryList(formData(categoryListRes.data!));
+			setTagList(formData(tagListRes.data));
+			setCategoryList(formData(categoryListRes.data));
 			if (id) {
 				const { data } = await getPostDetailByPostId(id);
-				data && setContent(data?.content);
-				data && form.setFieldsValue({ ...data, tag: formData(data.tag) });
+				setContent(data?.content);
+				form.setFieldsValue({ ...data, tag: formData(data.tag) });
 			}
 		} catch (error) {
 			// 处理错误信息

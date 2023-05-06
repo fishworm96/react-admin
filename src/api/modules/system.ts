@@ -9,6 +9,10 @@ import { SystemApi } from "../interface";
 // * 用户登录接口
 
 // * 获取菜单列表
+export const getMenu = () => {
+	return http.get<SystemApi.ResMenuInfo[]>(`${PORT1}/menu`);
+};
+
 export const getMenuById = (id: number) => {
 	return http.get<SystemApi.ResMenuInfo>(`${PORT1}/menu`, { id });
 };
