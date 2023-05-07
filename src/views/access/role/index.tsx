@@ -6,7 +6,7 @@ import BasicContent from "@/components/Content";
 import BasicForm, { IFormFn } from "@/components/Form";
 import BasicModal from "@/components/Modal";
 import BasicTable from "@/components/Table";
-import { ADD_TITLE, EDIT_TITLE } from "@/utils/config";
+import { ADD_TITLE, EDIT_TITLE } from "@/utils/constants";
 import { message, Space, TreeProps } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { createList, createRoleAccessList, RoleColumns, roleColumns } from "./model";

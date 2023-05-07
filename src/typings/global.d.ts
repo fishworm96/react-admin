@@ -14,6 +14,7 @@ declare namespace Menu {
 		close?: boolean;
 		children?: MenuOptions[];
 		button?: any;
+		is_show: boolean;
 	}
 }
 

@@ -8,13 +8,14 @@ import BasicForm, { IFormFn } from "@/components/Form";
 import BasicModal from "@/components/Modal";
 import BasicTable from "@/components/Table";
 import { MenuState } from "@/redux/interface";
-import { ADD_TITLE, EDIT_TITLE } from "@/utils/config";
-import { message, Space } from "antd";
+import { message, Space, Switch } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import { createList, TableColumns, tableColumns } from "./model";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setMenuListAction } from "@/redux/modules/menu/menuSlice";
+import { ADD_TITLE, EDIT_TITLE } from "@/utils/constants";
+import { updateMenuStatus } from "@/api/modules/menu";
 
 export interface Option {
 	value?: string | number | null;
@@ -58,7 +59,7 @@ const Menu: React.FC<MenuState> = () => {
 
 	const changeTableData = (list: Menu.MenuOptions[]): TableColumns[] => {
 		return list.map((item, index) => {
-			const { id, title, module_id, children, path, icon, type } = item;
+			const { id, title, module_id, children, path, icon, type, is_show } = item;
 			const cascadedOption: TableColumns = {
 				id,
 				key: `${module_id}_${index.toString()}`,
@@ -66,7 +67,8 @@ const Menu: React.FC<MenuState> = () => {
 				module_id,
 				type,
 				path: path,
-				icon: icon
+				icon: icon,
+				is_show
 			};
 
 			if (children && children.length) {
@@ -153,13 +155,31 @@ const Menu: React.FC<MenuState> = () => {
 		createFormRef.current?.handlerChange({ type: +e.target.value });
 	};
 
+	const handleChangeStatus = async (is_show: boolean, id: number) => {
+		await updateMenuStatus({ id, is_show });
+		const { data } = await getMenuList();
+		// 把路由菜单处理成一维数组，存储到 redux 中，做菜单权限判断
+		dispatch(setMenuListAction(data));
+	};
+
 	const displayRender = (labels: string[]) => labels[labels.length - 1];
 
-	const optionRender: ITableOptions<object> = (_, record) => {
+	const optionStats = (value: boolean, record: TableColumns) => {
+		return (
+			<Switch
+				onChange={value => handleChangeStatus(value, record.id)}
+				checkedChildren="显示"
+				unCheckedChildren="隐藏"
+				defaultChecked={value}
+			/>
+		);
+	};
+
+	const optionRender: ITableOptions<TableColumns> = (_, record) => {
 		return (
 			<Space wrap>
-				<UpdateBtn onClick={() => onUpdate((record as Menu.MenuOptions).id)} />
-				<DeleteBtn id={(record as Menu.MenuOptions).id} handleDelete={onDelete} />
+				<UpdateBtn onClick={() => onUpdate(record.id)} />
+				<DeleteBtn id={record.id} handleDelete={onDelete} />
 			</Space>
 		);
 	};
@@ -168,7 +188,7 @@ const Menu: React.FC<MenuState> = () => {
 		<BasicContent>
 			<>
 				<CreateBtn onCreate={onCreate} />
-				<BasicTable<TableColumns> columns={tableColumns(optionRender)} dataSource={tableData} />
+				<BasicTable<TableColumns> columns={tableColumns(optionRender, optionStats)} dataSource={tableData} />
 				<BasicModal width={1000} title={modalTitle} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
 					<BasicForm
 						formRef={createFormRef}

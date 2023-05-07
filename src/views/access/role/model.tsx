@@ -1,4 +1,4 @@
-import { INPUT_REQUIRED } from "@/utils/config";
+import { INPUT_REQUIRED } from "@/utils/constants";
 import { STYLE_WIDTH } from "@/utils/constants";
 import { DataNode, TreeProps } from "antd/lib/tree";
 
@@ -13,12 +13,10 @@ export const roleColumns = (optionRender: ITableOptions<RoleColumns>) => {
 		{
 			title: "角色",
 			dataIndex: "title"
-			// key: "title"
 		},
 		{
 			title: "描述",
 			dataIndex: "description"
-			// key: "type"
 		},
 		{
 			title: "操作",

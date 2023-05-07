@@ -60,8 +60,12 @@ const LayoutMenu = () => {
 	const deepLoopFloat = (menuList: Menu.MenuOptions[], newArr: MenuItem[] = []) => {
 		menuList.forEach((item: Menu.MenuOptions) => {
 			// 下面判断代码解释 *** !item?.children?.length   ==>   (!item.children || item.children.length === 0)
+			if (!item.is_show) return;
 			if (!item?.children?.length) return newArr.push(getItem(item.title, item.path, addIcon(item.icon!)));
-			newArr.push(getItem(item.title, item.path, addIcon(item.icon!), deepLoopFloat(item.children)));
+			if (!item.children?.some(child => child.is_show)) {
+				return newArr.push(getItem(item.title, item.path, addIcon(item.icon)));
+			}
+			newArr.push(getItem(item.title, item.path, addIcon(item.icon), deepLoopFloat(item.children)));
 		});
 		return newArr;
 	};

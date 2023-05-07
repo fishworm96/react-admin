@@ -1,13 +1,12 @@
 import { FormList } from "#/form";
-import { INPUT_REQUIRED, SELECT_REQUIRED } from "@/utils/config";
-import { STYLE_WIDTH } from "@/utils/constants";
+import { INPUT_REQUIRED, MENU_STATUS, SELECT_REQUIRED, STYLE_WIDTH } from "@/utils/constants";
 import type { ChangeEvent } from "react";
 import { CascadedOptions } from ".";
 import Icon from "./component/Icon";
 import type { Option } from "./index";
 
 export interface TableColumns {
-	id?: number;
+	id: number;
 	key: string;
 	title: string;
 	type: number;
@@ -15,6 +14,7 @@ export interface TableColumns {
 	path: string;
 	icon: string;
 	children?: TableColumns[];
+	is_show: boolean;
 }
 
 interface CreateList {
@@ -24,27 +24,31 @@ interface CreateList {
 	handlerCascaderOnChange: (value: string[], selectedOptions: Option[]) => void;
 }
 
-export const tableColumns = (optionRender: ITableOptions<TableColumns>) => {
+export const tableColumns = (
+	optionRender: ITableOptions<TableColumns>,
+	optionStats: (value: boolean, record: TableColumns) => JSX.Element
+) => {
 	return [
 		{
 			title: "名称",
-			dataIndex: "title",
-			key: "title"
+			dataIndex: "title"
 		},
 		{
 			title: "菜单等级",
-			dataIndex: "type",
-			key: "type"
+			dataIndex: "type"
 		},
 		{
 			title: "路径",
-			dataIndex: "path",
-			key: "path"
+			dataIndex: "path"
 		},
 		{
 			title: "图标",
-			dataIndex: "icon",
-			key: "icon"
+			dataIndex: "icon"
+		},
+		{
+			title: "状态",
+			dataIndex: "is_show",
+			render: (value: boolean, record: TableColumns) => optionStats(value, record)
 		},
 		{
 			title: "操作",
@@ -108,6 +112,16 @@ export const createList = ({ displayRender, options, changeInputType, handlerCas
 			maxTagCount: "responsive",
 			displayRender: displayRender,
 			onChange: handlerCascaderOnChange
+		}
+	},
+	{
+		label: "状态",
+		name: "is_show",
+		rules: INPUT_REQUIRED,
+		component: "Select",
+		componentProps: {
+			style: STYLE_WIDTH,
+			options: MENU_STATUS
 		}
 	},
 	{

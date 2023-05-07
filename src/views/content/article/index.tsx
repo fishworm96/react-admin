@@ -30,7 +30,7 @@ const Article = () => {
 			const { data } = await getPostList();
 			data && setPostList(formatData(data.post_list));
 		} catch (err) {
-			console.log(err);
+			// console.log(err);
 			return;
 		}
 	};

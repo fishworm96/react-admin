@@ -1,5 +1,5 @@
 import { ComponentProps, ComponentType } from "#/form";
-import { PLEASE_ENTER, PLEASE_SELECT } from "@/utils/config";
+import { PLEASE_ENTER, PLEASE_SELECT } from "@/utils/constants";
 import { DATE_FORMAT, TIME_FORMAT } from "@/utils/constants";
 
 /**
