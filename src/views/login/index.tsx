@@ -15,7 +15,7 @@ const Login = () => {
 				<div className="login-form">
 					<div className="login-logo">
 						<img className="login-icon" src={logo} alt="logo" />
-						<span className="logo-text">Hooks-Admin</span>
+						<span className="logo-text">在线管理系统</span>
 					</div>
 					<LoginForm />
 				</div>

@@ -1,6 +1,6 @@
 import { HOME_URL } from "@/config/config";
 import { DownOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu } from "antd";
+import { Button, Dropdown } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const MoreButton = (props: any) => {
@@ -15,29 +15,25 @@ const MoreButton = (props: any) => {
 		tabPath ?? navigate(HOME_URL);
 	};
 
-	const menu = (
-		<Menu
-			items={[
-				{
-					key: "1",
-					label: <span>{"tabs.closeCurrent"}</span>,
-					onClick: () => props.delTabs(pathname)
-				},
-				{
-					key: "2",
-					label: <span>{"tabs.closeOther"}</span>,
-					onClick: () => closeMultipleTab(pathname)
-				},
-				{
-					key: "3",
-					label: <span>{"tabs.closeAll"}</span>,
-					onClick: () => closeMultipleTab()
-				}
-			]}
-		/>
-	);
+	const items = [
+		{
+			key: "1",
+			label: <span>{"tabs.closeCurrent"}</span>,
+			onClick: () => props.delTabs(pathname)
+		},
+		{
+			key: "2",
+			label: <span>{"tabs.closeOther"}</span>,
+			onClick: () => closeMultipleTab(pathname)
+		},
+		{
+			key: "3",
+			label: <span>{"tabs.closeAll"}</span>,
+			onClick: () => closeMultipleTab()
+		}
+	];
 	return (
-		<Dropdown overlay={menu} placement="bottom" arrow={{ pointAtCenter: true }} trigger={["click"]}>
+		<Dropdown menu={{ items }} placement="bottom" arrow={{ pointAtCenter: true }} trigger={["click"]}>
 			<Button className="more-button" type="primary" size="small">
 				{"tabs.more"} <DownOutlined />
 			</Button>

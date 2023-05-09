@@ -126,7 +126,7 @@ const LayoutMenu = () => {
 					items={menuList}
 					onClick={clickMenu}
 					onOpenChange={onOpenChange}
-				></Menu>
+				/>
 			</Spin>
 		</div>
 	);

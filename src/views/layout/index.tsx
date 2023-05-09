@@ -9,7 +9,7 @@ import LayoutHeader from "./components/Header";
 import LayoutMenu from "./components/Menu";
 import "./index.less";
 
-const LayoutIndex = (props: any) => {
+const LayoutIndex = () => {
 	const isCollapse = useAppSelector(state => state.menu.isCollapse);
 	const dispatch = useAppDispatch();
 	const { Sider, Content } = Layout;
@@ -39,7 +39,7 @@ const LayoutIndex = (props: any) => {
 	return (
 		// 这里不用 layout 组件原因是切换页面时样式会先错乱然后再正常显示，造成页面闪屏效果
 		<section className="container">
-			<Sider collapsible trigger={null} collapsed={props.isCollapse} width={220} theme="dark">
+			<Sider collapsible trigger={null} collapsed={isCollapse} width={220} theme="dark">
 				<LayoutMenu></LayoutMenu>
 			</Sider>
 			<Layout>
