@@ -12,7 +12,7 @@ export const menuSlice = createSlice({
 	initialState,
 	reducers: {
 		setAuthButtons: (state, action: PayloadAction<{}>) => {
-			state.authState = action.payload;
+			state.authButtons = action.payload;
 		},
 		setAuthRouter: (state, action: PayloadAction<string[]>) => {
 			state.authRouter = action.payload;

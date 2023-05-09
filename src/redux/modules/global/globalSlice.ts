@@ -1,7 +1,7 @@
 import type { GlobalState, ThemeConfigProp } from "@/redux/interface";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/redux";
-// import type { SizeType } from "antd/lib/config-provider/SizeContext";
+import type { SizeType } from "antd/lib/config-provider/SizeContext";
 
 const initialState: GlobalState = {
 	token: "",
@@ -31,8 +31,8 @@ export const globalSlice = createSlice({
 		setToken: (state, action: PayloadAction<string>) => {
 			state.token = action.payload;
 		},
-		setAssemblySize: (state, action: PayloadAction<string>) => {
-			state.setAssemblySize = action.payload;
+		setAssemblySize: (state, action: PayloadAction<SizeType>) => {
+			state.assemblySize = action.payload;
 		},
 		setLanguage: (state, action: PayloadAction<string>) => {
 			state.language = action.payload;

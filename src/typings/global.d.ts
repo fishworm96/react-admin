@@ -33,7 +33,7 @@ declare interface ViteEnv {
 }
 
 declare interface MenuInfo {
-	key: string;
+	key: SizeType;
 	keyPath: string[];
 	item: React.ReactInstance;
 	domEvent: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>;

@@ -5,7 +5,7 @@ import { HOME_URL } from "@/config/config";
 
 const initialState: TabsState = {
 	tabsActive: HOME_URL,
-	tabsList: [{ title: "首页", path: HOME_URL, id: 0, module_id: 0, type: 0, icon: "" }]
+	tabsList: []
 };
 
 export const tabsSlice = createSlice({
@@ -13,10 +13,10 @@ export const tabsSlice = createSlice({
 	initialState,
 	reducers: {
 		setTabsList: (state, action: PayloadAction<Menu.MenuOptions[]>) => {
-			state.tabsActive = action.payload;
+			state.tabsList = action.payload;
 		},
 		setTabsActive: (state, action: PayloadAction<string>) => {
-			state.tabsList = action.payload;
+			state.tabsActive = action.payload;
 		}
 	}
 });

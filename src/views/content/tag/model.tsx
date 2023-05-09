@@ -1,5 +1,5 @@
 import { FormList } from "#/form";
-import { INPUT_REQUIRED } from "@/utils/config";
+import { INPUT_REQUIRED } from "@/utils/constants";
 import { STYLE_WIDTH } from "@/utils/constants";
 import { Tag } from "antd";
 

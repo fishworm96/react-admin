@@ -15,7 +15,7 @@ export const menuSlice = createSlice({
 	initialState,
 	reducers: {
 		setBreadcrumbList: (state, action: PayloadAction<breadcrumbList>) => {
-			state.isCollapse = action.payload;
+			state.breadcrumbList = action.payload;
 		}
 	}
 });
