@@ -6,7 +6,7 @@ import BasicContent from "@/components/Content";
 import BasicForm, { IFormFn } from "@/components/Form";
 import BasicModal from "@/components/Modal";
 import BasicTable from "@/components/Table";
-import { ADD_TITLE, EDIT_TITLE } from "@/utils/config";
+import { ADD_TITLE, EDIT_TITLE } from "@/utils/constants";
 import { Image, Space, UploadFile } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { ZoomInOutlined } from "@ant-design/icons";
@@ -30,7 +30,7 @@ const Article = () => {
 	const [categoryList, setCategoryList] = useState<CategoryColumns[]>([]);
 	const [modalTitle, setModalTitle] = useState<string>();
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [categoryName, setCategoryName] = useState<{}>("");
+	const [categoryName, setCategoryName] = useState<{}>();
 	const [image, setImage] = useState<string>("");
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
 
@@ -109,6 +109,13 @@ const Article = () => {
 		}
 	};
 
+	// 模态框取消按钮
+	const OnCancelBtn = () => {
+		setIsModalOpen(false);
+		setCategoryName({});
+		setImage("");
+	};
+
 	const customRequest = async ({ file, onProgress, onSuccess, onError }: RcCustomRequestOptions) => {
 		const md5 = await getMd5(file);
 		const form = new FormData();
@@ -166,7 +173,7 @@ const Article = () => {
 				{categoryList.length > 0 && (
 					<BasicTable columns={categoryColumns(optionRender, categoryImage)} dataSource={categoryList} />
 				)}
-				<BasicModal title={modalTitle} open={isModalOpen} onOk={handleOk} onCancel={() => setIsModalOpen(false)}>
+				<BasicModal title={modalTitle} open={isModalOpen} onOk={handleOk} onCancel={OnCancelBtn}>
 					<BasicForm
 						formRef={createFormRef}
 						list={createList({
