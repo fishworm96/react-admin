@@ -1,6 +1,5 @@
 import type { AuthState } from "@/redux/interface";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "@/redux";
 
 const initialState: AuthState = {
 	authButtons: {},
@@ -21,9 +20,5 @@ export const menuSlice = createSlice({
 });
 
 export const { setAuthButtons, setAuthRouter } = menuSlice.actions;
-
-export const selectAuthButtons = (state: RootState) => state.auth.authButtons;
-
-export const selectAuthRouter = (state: RootState) => state.auth.authRouter;
 
 export default menuSlice.reducer;

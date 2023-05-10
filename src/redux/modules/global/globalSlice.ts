@@ -1,6 +1,5 @@
 import type { GlobalState, ThemeConfigProp } from "@/redux/interface";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "@/redux";
 import type { SizeType } from "antd/lib/config-provider/SizeContext";
 
 const initialState: GlobalState = {
@@ -44,9 +43,5 @@ export const globalSlice = createSlice({
 });
 
 export const { setToken, setAssemblySize, setLanguage, setThemeConfig } = globalSlice.actions;
-
-export const selectToken = (state: RootState) => state.global.token;
-export const selectThemeConfig = (state: RootState) => state.global.themeConfig;
-export const selectAssemblySize = (state: RootState) => state.global.assemblySize;
 
 export default globalSlice.reducer;
