@@ -48,7 +48,7 @@ const Article = () => {
 	const onDelete = async ({ isOk, id }: callbackParams<string>) => {
 		if (isOk) {
 			id && (await deletePost(id));
-			getPost();
+			setPostList(postList.filter(item => item.key !== id));
 		}
 	};
 

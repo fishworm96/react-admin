@@ -72,7 +72,7 @@ const Article = () => {
 	};
 
 	// 更新按钮
-	const onUpdate = async (category: CategoryColumns) => {
+	const onUpdate = (category: CategoryColumns) => {
 		setModalTitle(EDIT_TITLE);
 		setIsModalOpen(true);
 		if (category) {
@@ -84,7 +84,7 @@ const Article = () => {
 	// 删除分类
 	const onDelete = async ({ isOk, id }: callbackParams<number>) => {
 		if (isOk && id) {
-			deleteCategory(id);
+			await deleteCategory(id);
 			setCategoryList(categoryList.filter(item => item.key !== id));
 		}
 	};
@@ -97,11 +97,11 @@ const Article = () => {
 	const handleCreate = async (value: CategoryColumns) => {
 		try {
 			if (value.key) {
-				updateCategory({ id: +value.key, name: value.name, image: value.image });
+				await updateCategory({ id: +value.key, name: value.name, image: value.image });
 				setCategoryList(categoryList.map(item => (item.key === value.key ? { ...value, image } : item)));
 				return;
 			}
-			createCategory({ name: value.name, image });
+			await createCategory({ name: value.name, image });
 			getCategory();
 		} finally {
 			setImage("");

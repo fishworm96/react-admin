@@ -33,7 +33,7 @@ const Article = () => {
 	const getTag = async () => {
 		try {
 			const { data } = await getTagList();
-			data && setTag(formatData(data));
+			setTag(formatData(data));
 		} catch (err) {
 			console.error(err);
 			return;
@@ -47,7 +47,7 @@ const Article = () => {
 		setTagName("");
 	};
 
-	const onUpdate = async (tag: TagColumns) => {
+	const onUpdate = (tag: TagColumns) => {
 		setModalTitle(EDIT_TITLE);
 		setIsModalOpen(true);
 		if (tag) {
@@ -57,7 +57,7 @@ const Article = () => {
 
 	const onDelete = async ({ isOk, id }: callbackParams<number>) => {
 		if (isOk && id) {
-			deleteTag(id);
+			await deleteTag(id);
 			setTag(tag.filter(item => item.key !== id));
 		}
 	};
@@ -70,11 +70,11 @@ const Article = () => {
 	const handleCreate = async (value: TagColumns) => {
 		try {
 			if (value.key) {
-				updateTag({ name: value.name, id: value.key });
+				await updateTag({ name: value.name, id: value.key });
 				setTag(tag.map(item => (item.key === value.key ? value : item)));
 				return;
 			}
-			createTag(value);
+			await createTag(value);
 			getTag();
 		} finally {
 			setIsModalOpen(false);

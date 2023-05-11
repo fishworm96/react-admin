@@ -122,7 +122,7 @@ const Role = () => {
 	// 创建或更新角色函数
 	const handleCreate = async (value: RoleApi.RoleList) => {
 		try {
-			value.id ? updateRole(value) : await createRole(value);
+			value.id ? await updateRole(value) : await createRole(value);
 			handleGetRoleList();
 		} finally {
 			setIsModalOpen(false);
@@ -130,10 +130,10 @@ const Role = () => {
 	};
 
 	// 修改角色权限函数
-	const handleUpdateRoleAccess = () => {
+	const handleUpdateRoleAccess = async () => {
 		if (!roleAccess) return;
 		try {
-			updateRoleAccess({ role_id: roleId, access_id: roleAccess.reverse() });
+			await updateRoleAccess({ role_id: roleId, access_id: roleAccess.reverse() });
 		} finally {
 			setIsRoleModalOpen(false);
 		}
