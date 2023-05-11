@@ -12,6 +12,7 @@ import { postColumns, PostColumns } from "./model";
 const Article = () => {
 	const navigate = useNavigate();
 	const [postList, setPostList] = useState<PostColumns[]>([]);
+	const [total, setTotal] = useState<number>();
 
 	useEffect(() => {
 		getPost();
@@ -28,7 +29,8 @@ const Article = () => {
 	const getPost = async () => {
 		try {
 			const { data } = await getPostList();
-			data && setPostList(formatData(data.post_list));
+			setPostList(formatData(data.post_list));
+			setTotal(data.total_pages);
 		} catch (err) {
 			// console.log(err);
 			return;
@@ -50,11 +52,17 @@ const Article = () => {
 		}
 	};
 
-	const optionRender: ITableOptions<object> = (_, record) => {
+	// 切换分页函数
+	const handleChangePage = async (page: number) => {
+		const { data } = await getPostList(page);
+		setPostList(formatData(data.post_list));
+	};
+
+	const optionRender: ITableOptions<PostColumns> = (_, record) => {
 		return (
 			<Space wrap>
-				<UpdateBtn onClick={() => onUpdate((record as PostColumns).key)} />
-				<DeleteBtn id={(record as PostColumns).key} handleDelete={onDelete} />
+				<UpdateBtn onClick={() => onUpdate(record.key)} />
+				<DeleteBtn id={record.key} handleDelete={onDelete} />
 			</Space>
 		);
 	};
@@ -63,7 +71,13 @@ const Article = () => {
 		<BasicContent>
 			<>
 				<CreateBtn onCreate={onCreate} />
-				{postList.length > 0 && <BasicTable<PostColumns> columns={postColumns(optionRender)} dataSource={postList} />}
+				{postList.length > 0 && (
+					<BasicTable<PostColumns>
+						pagination={{ defaultCurrent: 1, total: total, onChange: handleChangePage }}
+						columns={postColumns(optionRender)}
+						dataSource={postList}
+					/>
+				)}
 			</>
 		</BasicContent>
 	);

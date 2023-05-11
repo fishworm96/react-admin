@@ -9,8 +9,8 @@ import { ContentApi } from "../interface";
 // * 用户登录接口
 
 // * 获取文章列表
-export const getPostList = () => {
-	return http.get<ContentApi.ResArticleList>(`${PORT1}/post`);
+export const getPostList = (page?: number, size?: number) => {
+	return http.get<ContentApi.ResArticleList>(`${PORT1}/post?page=${page}&size=${size}`);
 };
 
 // 获取标签列表

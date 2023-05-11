@@ -4,6 +4,7 @@ import { ColumnsType } from "antd/lib/table";
 interface Props<T> {
 	columns: ColumnsType<T>;
 	dataSource: T[];
+	pagination?: object | false;
 }
 
 const BasicTable = <T extends {}>(props: Props<T>) => {
