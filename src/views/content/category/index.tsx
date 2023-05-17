@@ -97,7 +97,7 @@ const Article = () => {
 	const handleCreate = async (value: CategoryColumns) => {
 		try {
 			if (value.key) {
-				await updateCategory({ id: +value.key, name: value.name, image: value.image });
+				await updateCategory({ id: +value.key, name: value.name, image: image });
 				setCategoryList(categoryList.map(item => (item.key === value.key ? { ...value, image } : item)));
 				return;
 			}
@@ -117,10 +117,12 @@ const Article = () => {
 	};
 
 	const customRequest = async ({ file, onProgress, onSuccess, onError }: RcCustomRequestOptions) => {
+		const is_thumbnail = "true";
 		const md5 = await getMd5(file);
 		const form = new FormData();
 		form.append("image", file);
 		form.append("md5", md5);
+		form.append("is_thumbnail", is_thumbnail);
 		// 将onProgress回调函数转换成onUploadProgress回调函数
 		const onUploadProgress = (progressEvent: ProgressEvent) => {
 			const percentCompleted = +Math.round((progressEvent.loaded / progressEvent.total) * 100).toFixed(2);
