@@ -17,7 +17,8 @@ const config = {
 	// 设置超时时间（10s）
 	timeout: 10000,
 	// 跨域时候允许携带凭证
-	withCredentials: true
+	withCredentials: true,
+	retry: 1
 };
 
 class RequestHttp {
@@ -52,18 +53,29 @@ class RequestHttp {
 		 */
 		this.service.interceptors.response.use(
 			(response: AxiosResponse) => {
-				const { data, config } = response;
+				const { data, config, headers } = response;
 				NProgress.done();
+				if (data.code === ResultEnum.OVERDUE) {
+					tryHideFullScreenLoading();
+					store.dispatch(setToken(headers.authorization));
+					if (headers.authorization) {
+						config.headers!.Authorization = "";
+						const retryCount = axiosCanceler.reset(config);
+						if (retryCount >= 5) {
+							axiosCanceler.removePending(config);
+							return Promise.reject(data);
+						}
+						return this.service(config);
+					}
+					message.error(data.msg);
+					window.location.href = "/admin";
+					axiosCanceler.removePending(config);
+					return Promise.reject(data);
+				}
 				// * 在请求结束后，移除本次请求(关闭loading)
 				axiosCanceler.removePending(config);
 				tryHideFullScreenLoading();
-				// * 登录失效（code == 599）
-				if (data.code == ResultEnum.OVERDUE) {
-					store.dispatch(setToken(""));
-					message.error(data.msg);
-					window.location.hash = "/admin";
-					return Promise.reject(data);
-				}
+				// * token 续期失效
 				// * 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）
 				if (data.code && data.code !== ResultEnum.SUCCESS) {
 					message.error(data.msg);

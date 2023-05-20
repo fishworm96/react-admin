@@ -5,7 +5,7 @@
 export enum ResultEnum {
 	SUCCESS = 1000,
 	ERROR = 500,
-	OVERDUE = 599,
+	OVERDUE = 1016,
 	TIMEOUT = 10000,
 	TYPE = "success"
 }

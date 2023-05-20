@@ -4,6 +4,7 @@ import qs from "qs";
 
 // * 声明一个 Map 用于存储每个请求的标识 和 取消函数
 let pendingMap = new Map<string, Canceler>();
+let retryMap = new Map<string, number>();
 
 // * 序列化参数
 export const getPendingUrl = (config: AxiosRequestConfig) =>
@@ -21,7 +22,7 @@ export class AxiosCanceler {
 		config.cancelToken =
 			config.cancelToken ||
 			new axios.CancelToken(cancel => {
-				if (!pendingMap.has(url)) {
+				if (!pendingMap.has(url) || !retryMap.has(url)) {
 					// 如果 pending 中不存在当前请求，则添加进去
 					pendingMap.set(url, cancel);
 				}
@@ -40,6 +41,7 @@ export class AxiosCanceler {
 			const cancel = pendingMap.get(url);
 			cancel && cancel();
 			pendingMap.delete(url);
+			retryMap.delete(url);
 		}
 	}
 
@@ -51,12 +53,17 @@ export class AxiosCanceler {
 			cancel && isFunction(cancel) && cancel();
 		});
 		pendingMap.clear();
+		retryMap.clear();
 	}
 
 	/**
 	 * @description: 重置
 	 */
-	reset(): void {
+	reset(config: AxiosRequestConfig): number {
+		const url = getPendingUrl(config);
+		const retryCount = retryMap.get(url) || 0;
+		retryMap.set(url, retryCount + 1);
 		pendingMap = new Map<string, Canceler>();
+		return retryCount;
 	}
 }
