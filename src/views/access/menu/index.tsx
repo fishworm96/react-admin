@@ -144,10 +144,13 @@ const Menu: React.FC<MenuState> = () => {
 
 	const handlerCascaderOnChange = (value: string[], selectedOptions: Option[]) => {
 		const lastOption = selectedOptions[selectedOptions.length - 1];
+
 		if (lastOption) {
 			const module_id = typeof lastOption.value === "string" ? lastOption.value.split("_")[1] : lastOption.value;
 			const parent_name = typeof lastOption.label === "string" ? lastOption.label : undefined;
-			module_id && parent_name && createFormRef.current?.handlerChange({ module_id: +module_id, parent_name });
+			(module_id || module_id === 0) &&
+				parent_name &&
+				createFormRef.current?.handlerChange({ module_id: +module_id, parent_name });
 		}
 	};
 
